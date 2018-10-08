@@ -21,7 +21,7 @@ setup(
     install_requires=dependencies,
     entry_points={
         'console_scripts': [
-            'json-validator = json-validator.cli:main',
+            'json-validator=json_validator.cli:main',
         ],
     },
     classifiers=[

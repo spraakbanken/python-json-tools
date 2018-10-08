@@ -1,6 +1,6 @@
 import pytest
 from click.testing import CliRunner
-from json-validator import cli
+from json_validator import cli
 
 
 @pytest.fixture
