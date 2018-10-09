@@ -6,12 +6,17 @@ def validate(data, schema):
         validate_entry = fastjsonschema.compile(schema)
     except fastjsonschema.JsonSchemaDefinitionException as e:
         raise e
+    errors = []
+    correct = []
 
-    data_passing = []
-    data_failing = []
-    stats = { 'total': 0, 'failing': 0}
     for obj in data:
         try:
             new_data = validate_entry(obj)
         except fastjsonschema.JsonSchemaException as e:
-            data_failing.append({})
+            errors.append({
+                "error": e.message,
+                "object": obj
+            })
+        else:
+            correct.append(new_data)
+    return (correct, errors)
