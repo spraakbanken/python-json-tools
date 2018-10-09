@@ -1,10 +1,16 @@
+import json
+
 import click
 
+from json_validator import get_validator
 
 @click.command()
-@click.option('--as-cowboy', '-c', is_flag=True, help='Greet as a cowboy.')
-@click.argument('name', default='world', required=False)
-def main(name, as_cowboy):
+@click.option('--schema', '-s', type=click.File('r'), help='Schema to use for validating.')
+@click.argument('file', default='world', required=True, type=click.File('r'))
+def main(file, schema):
     """Validates a json-file with a schema (json-schema.org)."""
-    greet = 'Howdy' if as_cowboy else 'Hello'
-    click.echo('{0}, {1}.'.format(greet, name))
+
+    click.echo('Validating {0} with the schema in {1}.'.format(file, schema))
+    validator = get_validator(schema)
+    data = json.load(file)
+    validator.validate(data)
