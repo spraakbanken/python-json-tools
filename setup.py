@@ -7,7 +7,7 @@ dependencies = ['click']
 
 setup(
     name='json-validator',
-    version='0.0.1',
+    version='0.0.2',
     url='https://github.com/spraakbanken/json-validator',
     license='BSD',
     author='Kristoffer Andersson',
