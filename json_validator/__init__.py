@@ -1,11 +1,16 @@
+"""Module to validate json object according to a json-schema.org schema."""
+
 import fastjsonschema
+
+from json_validator.exceptions import JsonValidatorSchemaDefinitionException
 
 
 def validate(data, schema):
     try:
         validate_entry = fastjsonschema.compile(schema)
     except fastjsonschema.JsonSchemaDefinitionException as e:
-        raise e
+        raise JsonValidatorSchemaDefinitionException(e.message)
+
     errors = []
     error_id = 0
     correct = []
