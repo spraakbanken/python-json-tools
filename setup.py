@@ -3,7 +3,7 @@ Validates a json-file with a schema (json-schema.org).
 """
 from setuptools import find_packages, setup
 
-dependencies = ['click']
+dependencies = ['click', 'fastjsonschema']
 
 setup(
     name='json-validator',
