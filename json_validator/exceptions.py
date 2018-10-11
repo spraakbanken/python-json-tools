@@ -1,4 +1,3 @@
-from exceptions import Exception
 
 
 class JsonValidatorException(Exception):
