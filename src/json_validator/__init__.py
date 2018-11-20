@@ -4,6 +4,8 @@ import fastjsonschema
 
 from json_validator.exceptions import JsonValidatorSchemaDefinitionException
 
+__version__ = '0.1.0'
+
 
 def validate(data, schema):
     try:
