@@ -2,32 +2,73 @@
 
 import fastjsonschema
 
-from json_validator.exceptions import JsonValidatorSchemaDefinitionException
+from json_validator import exceptions
+
 
 __version__ = '0.1.0'
 
 
-def validate(data, schema):
-    try:
-        validate_entry = fastjsonschema.compile(schema)
-    except fastjsonschema.JsonSchemaDefinitionException as e:
-        raise JsonValidatorSchemaDefinitionException(e.message)
+class Result(object):
+    def __init__(self,
+                 ok=None,
+                 error=None,
+                 error_msg=None):
+        self.ok = ok
+        self.error = error
+        self.error_msg = error_msg
 
-    errors = []
-    error_id = 0
-    correct = []
+
+def ok(item) -> Result:
+    return Result(ok=item)
+
+
+def error(item, msg) -> Result:
+    return Result(error=item, error_msg=msg)
+
+
+def streaming_validate(schema,
+                       data,
+                       raise_on_error=False):
+    try:
+        validator = fastjsonschema.compile(schema)
+    except fastjsonschema.JsonSchemaDefinitionException as e:
+        raise exceptions.SchemaDefinitionException(e.message)
 
     for obj in data:
         try:
-            new_data = validate_entry(obj)
+            item = validator(obj)
         except fastjsonschema.JsonSchemaException as e:
-            errors.append({
-                "error_id": error_id,
-                "error": e.message,
-                "object": obj
-            })
-            correct.append({"_JSON_VALIDATOR_ERROR_ID": error_id})
-            error_id += 1
+            if raise_on_error:
+                raise exceptions.ValidationException(e.message)
+            yield error(obj, e.message)
         else:
-            correct.append(new_data)
-    return (correct, errors)
+            yield ok(item)
+
+
+def validate(schema, data, raise_on_error=False):
+    errors = []
+    correct = []
+
+    for result in streaming_validate(schema, data, raise_on_error):
+        if result.ok:
+            correct.append(result.ok)
+        else:
+            errors.append({
+                'failing': result.error,
+                'message': result.error_msg 
+            })
+    return correct, errors
+
+
+def processing_validate(schema,
+                        data,
+                        on_ok,
+                        on_error):
+    for result in streaming_validate(schema, data):
+        if result.ok:
+            on_ok.send(result.ok)
+        else:
+            on_error.send({
+                'failing': result.error,
+                'message': result.error_msg
+            })

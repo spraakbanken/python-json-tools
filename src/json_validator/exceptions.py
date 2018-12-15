@@ -24,11 +24,11 @@ class JsonValidatorException(Exception):
         super(JsonValidatorException, self).__init__(message)
 
 
-class JsonValidatorSchemaDefinitionException(JsonValidatorException):
+class SchemaDefinitionException(JsonValidatorException):
     def __init__(self, message):
-        super(JsonValidatorSchemaDefinitionException, self).__init__(message)
+        super(SchemaDefinitionException, self).__init__(message)
 
 
-class JsonValidatorValidationException(JsonValidatorException):
+class ValidationException(JsonValidatorException):
     def __init__(self, message):
-        super(JsonValidatorValidationException, self).__init__(message)
+        super(ValidationException, self).__init__(message)
