@@ -1,4 +1,4 @@
-FROM debian:9.5-slim
+FROM python:3.5-slim
 
 LABEL "com.github.actions.name"="Hello World"
 LABEL "com.github.actions.description"="Write arguments to the standard output"
