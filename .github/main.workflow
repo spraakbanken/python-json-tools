@@ -1,12 +1,15 @@
-workflow "New workflow" {   
+workflow "Run tests" {   
     on = "push"   
-    resolves = ["Hello World"]
+    resolves = ["Test"]
 } 
 
-action "Hello World" {   
+action "Build" {   
     uses = "./action-a"   
-    env = {     
-        MY_NAME = "spraakbanken"   
-    }   
-    args = "\"Hello world, I'm $MY_NAME!\""
+    args = "install-dev"
+}
+
+action "Test" {
+	needs = "Build"
+	uses = "./action-a"
+	args = "test"
 }
