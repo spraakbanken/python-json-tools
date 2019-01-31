@@ -1,4 +1,4 @@
 #!/bin/sh -l
 
 sh -c "python --version"
-sh -c "make $*"
+sh -c "$*"

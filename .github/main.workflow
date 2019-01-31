@@ -5,11 +5,11 @@ workflow "Run tests" {
 
 action "Build" {   
     uses = "./action-a"   
-    args = "install-dev"
+    args = "pipenv install --dev"
 }
 
 action "Test" {
 	needs = "Build"
 	uses = "./action-a"
-	args = "test"
+	args = "pipenv run pytest tests"
 }
