@@ -1,15 +1,15 @@
 workflow "Run tests" {   
     on = "push"   
-    resolves = ["Test"]
+    resolves = ["py35-Test"]
 } 
 
-action "Build" {   
-    uses = "./action-a"   
+action "py35-Build" {   
+    uses = "./gh-actions/py35-pipenv"   
     args = "pipenv install --dev"
 }
 
-action "Test" {
-	needs = "Build"
-	uses = "./action-a"
+action "py35-Test" {
+	needs = "py35-Build"
+	uses = "./gh-actions/py35-pipenv"
 	args = "pipenv run pytest tests"
 }
