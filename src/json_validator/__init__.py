@@ -13,6 +13,8 @@ class Result(object):
                  ok=None,
                  error=None,
                  error_msg=None):
+        if ok is not None and error is not None:
+            raise ValueError()
         self.ok = ok
         self.error = error
         self.error_msg = error_msg
@@ -55,7 +57,7 @@ def validate(schema, data, raise_on_error=False):
         else:
             errors.append({
                 'failing': result.error,
-                'message': result.error_msg 
+                'message': result.error_msg
             })
     return correct, errors
 
