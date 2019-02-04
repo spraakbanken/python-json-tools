@@ -1,12 +1,15 @@
-workflow "New workflow" {   
+workflow "Run tests" {   
     on = "push"   
-    resolves = ["Hello World"]
+    resolves = ["py35-Test"]
 } 
 
-action "Hello World" {   
-    uses = "./action-a"   
-    env = {     
-        MY_NAME = "spraakbanken"   
-    }   
-    args = "\"Hello world, I'm $MY_NAME!\""
+action "py35-Build" {   
+    uses = "./gh-actions/py35-pipenv"   
+    args = "pipenv install --dev"
+}
+
+action "py35-Test" {
+	needs = "py35-Build"
+	uses = "./gh-actions/py35-pipenv"
+	args = "pipenv run pytest tests"
 }
