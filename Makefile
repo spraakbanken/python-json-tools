@@ -1,5 +1,5 @@
-install-dev:
-    pipenv install --dev
+setup-dev-env:
+	pip install -e .[dev]
 
 test:
-	pipenv run py.test tests
+	pytest -vv --cov=src tests

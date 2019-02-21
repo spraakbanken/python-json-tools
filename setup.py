@@ -30,6 +30,9 @@ setup(
         'fastjsonschema',
         'click',
     ],
+    extras_require={
+        'dev': ['pytest', 'pytest-cov'],
+    },
     include_package_data=True,
     zip_safe=False,
     classifiers=[
@@ -53,5 +56,4 @@ setup(
         # 'Programming Language :: Python :: Implementation :: Stackless',
         'Topic :: Utilities',
     ],
-
 )
