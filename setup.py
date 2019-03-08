@@ -4,13 +4,13 @@ from setuptools import find_packages
 from setuptools import setup
 
 setup(
-    name='json-validator',
+    name='json-tools',
     version='0.1.0',
     description='',
     author='Språkbanken at the University of Gothenburg',
     maintainer='Språkbanken',
     maintainer_email='sb-info@svenska.gu.se',
-    url='https://www.github.com/spraakbanken/python-json-validator',
+    url='https://www.github.com/spraakbanken/python-json-tools',
     # packages_dir={'':'.'}
     # py_modules=['offline.py'],
     packages=find_packages('src'),
