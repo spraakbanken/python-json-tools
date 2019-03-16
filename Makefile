@@ -37,4 +37,4 @@ ${VENV_NAME}/dev.installed: setup.py setup.cfg tools/pip-requires
 install-dev: venv ${VENV_NAME}/dev.installed
 
 test: install-dev
-	${PYTHON} -m pytest tests
+	${PYTHON} -m pytest --cov=json_tools --cov-report=term-missing tests

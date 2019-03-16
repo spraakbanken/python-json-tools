@@ -17,7 +17,8 @@ def dump(stream: IO, data: Union[Dict,Iterable]):
         Iterable object to write.
     """
     if isinstance(data, dict):
-        return stream.write(jsonlib.dumps(data))
+        stream.write(jsonlib.dumps(data))
+        return
     
     stream.write('[\n')
     it = iter(data)
