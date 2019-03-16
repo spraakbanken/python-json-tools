@@ -1,19 +1,24 @@
+from typing import Dict
 from typing import IO
 from typing import Iterable
+from typing import Union
 
 from json_tools import jsonlib
 
 
-def dump_array_json(stream: IO, data: Iterable):
+def dump(stream: IO, data: Union[Dict,Iterable]):
     """ Dump array to a file object.
 
     Parameters
     ----------
-    fp : file object
+    fp :
         File object to write to. Must be writable.
-    gen : Iterable
+    data :
         Iterable object to write.
     """
+    if isinstance(data, dict):
+        return jsonlib.dump(stream, data)
+    
     stream.write('[\n')
     it = iter(data)
     try:

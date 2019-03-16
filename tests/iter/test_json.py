@@ -1,6 +1,6 @@
 import io
 
-from json_tools.iterate import json_iter as jiter
+from json_tools.iter import json_iter as jiter
 
 
 data = [
@@ -16,13 +16,19 @@ def gen_data():
         yield i
 
 
+def test_dump_dict_stringio():
+    out = io.StringIO()
+    jiter.dump(out, data[0])
+    assert out.getvalue() == '{"a": 1}'
+    
+    
 def test_dump_array_stringio():
     out = io.StringIO()
-    jiter.dump_array_json(out, data)
+    jiter.dump(out, data)
     assert facit == out.getvalue()
 
 
 def test_dump_gen_stringio():
     out = io.StringIO()
-    jiter.dump_array_json(out, gen_data())
+    jiter.dump(out, gen_data())
     assert facit == out.getvalue()
