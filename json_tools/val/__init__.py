@@ -2,7 +2,15 @@
 
 import fastjsonschema
 
-from json_tools import exceptions
+from typing import Coroutine
+from typing import Dict
+from typing import Generator
+from typing import Iterable
+from typing import List
+from typing import Tuple
+from typing import Union
+
+from . import exceptions
 
 
 __version__ = '0.1.0'
@@ -20,57 +28,71 @@ class Result(object):
         self.error_msg = error_msg
 
 
-def ok(item) -> Result:
-    return Result(ok=item)
+def ok(item: Dict) -> Tuple[Dict, None]:
+    return (item, None)
 
 
-def error(item, msg) -> Result:
-    return Result(error=item, error_msg=msg)
+def error(item: Dict, msg: str) -> Tuple[None, Dict]:
+    return (None, {'failing': item, 'message': msg})
 
 
-def streaming_validate(schema,
-                       data,
-                       raise_on_error=False):
+def streaming_validate(
+        schema: Dict,
+        data: Union[Dict, Iterable[Dict]],
+        *,
+        raise_on_error: bool = False
+    ) -> Generator[Tuple, None, Tuple]:
     try:
         validator = fastjsonschema.compile(schema)
     except fastjsonschema.JsonSchemaDefinitionException as e:
         raise exceptions.SchemaDefinitionException(e.message)
 
-    for obj in data:
+    if isinstance(data, dict):
         try:
-            item = validator(obj)
+            valid_obj = validator(data)
+            return ok(valid_obj)
         except fastjsonschema.JsonSchemaException as e:
             if raise_on_error:
-                raise exceptions.ValidationException(e.message)
-            yield error(obj, e.message)
+                raise exceptions.ValidationException(e.message, data)
+            return error(data, e.message)
+    
+    for orig_obj in data:
+        try:
+            valid_obj = validator(orig_obj)
+        except fastjsonschema.JsonSchemaException as e:
+            if raise_on_error:
+                raise exceptions.ValidationException(e.message, orig_obj)
+            yield error(orig_obj, e.message)
         else:
-            yield ok(item)
+            yield ok(valid_obj)
 
 
-def validate(schema, data, raise_on_error=False):
+def validate(
+        schema: Dict,
+        data: Union[Dict, Iterable[Dict]],
+        *,
+        raise_on_error: bool = False
+    ) -> Tuple[List[Dict], List[Dict]]:
     errors = []
     correct = []
 
-    for result in streaming_validate(schema, data, raise_on_error):
-        if result.ok:
-            correct.append(result.ok)
+    for ok, error in streaming_validate(schema, data, raise_on_error):
+        if ok:
+            correct.append(ok)
         else:
-            errors.append({
-                'failing': result.error,
-                'message': result.error_msg
-            })
+            errors.append(error)
     return correct, errors
 
 
-def processing_validate(schema,
-                        data,
-                        on_ok,
-                        on_error):
-    for result in streaming_validate(schema, data):
-        if result.ok:
-            on_ok.send(result.ok)
+def processing_validate(
+        schema: Dict,
+        data: Union[Dict, Iterable[Dict]],
+        *,
+        on_ok: Generator[None, Dict, None],
+        on_error: Generator[None, Dict, None]
+    ) -> None:
+    for ok, error in streaming_validate(schema, data):
+        if ok:
+            on_ok.send(ok)
         else:
-            on_error.send({
-                'failing': result.error,
-                'message': result.error_msg
-            })
+            on_error.send(error)

@@ -1,8 +1,8 @@
 
 
-class JsonValidatorException(Exception):
+class JsonToolsException(Exception):
     """
-    Base exception for json_validator
+    Base exception for json_tools
     """
 
     def __init__(self, message):
@@ -21,14 +21,4 @@ class JsonValidatorException(Exception):
 
         """
 
-        super(JsonValidatorException, self).__init__(message)
-
-
-class SchemaDefinitionException(JsonValidatorException):
-    def __init__(self, message):
-        super(SchemaDefinitionException, self).__init__(message)
-
-
-class ValidationException(JsonValidatorException):
-    def __init__(self, message):
-        super(ValidationException, self).__init__(message)
+        super().__init__(message)

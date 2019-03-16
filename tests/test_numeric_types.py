@@ -28,12 +28,12 @@ invalid_data = [
 
 
 def test_valid_data():
-    for result in jv.streaming_validate(schema, valid_data):
-        assert result.ok is not None
-        assert result.error is None
+    for ok, error in jv.streaming_validate(schema, valid_data):
+        assert ok is not None
+        assert error is None
 
 
 def test_invalid_data():
-    for result in jv.streaming_validate(schema, invalid_data):
-        assert result.ok is None
-        assert result.error is not None
+    for ok, error in jv.streaming_validate(schema, invalid_data):
+        assert ok is None
+        assert error is not None

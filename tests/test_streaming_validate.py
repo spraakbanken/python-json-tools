@@ -34,28 +34,28 @@ def test_valid_data():
     n = 10
     stream = jv.streaming_validate(schema, gen_valid_data(n))
     
-    for i, result in enumerate(stream): 
-        assert result.ok
-        assert result.ok['valid'] == i
-        assert not result.error
+    for i, (ok, error) in enumerate(stream): 
+        assert ok
+        assert ok['valid'] == i
+        assert not error
 
 
 def test_invalid_data():
     n = 10
     stream = jv.streaming_validate(schema, gen_invalid_data(n))
-    for result in stream:
-        assert result.error
-        assert not result.ok
+    for ok, error in stream:
+        assert error
+        assert not ok
 
 
 def test_mixed_data():
     n = 10
     stream = jv.streaming_validate(schema, gen_mixed_data(n))
-    for i, result in enumerate(stream):
+    for i, (ok, error) in enumerate(stream):
         if i % 2 == 1:
-            assert result.ok
-            assert not result.error
+            assert ok
+            assert not error
         else:
-            assert result.error
-            assert not result.ok
+            assert error
+            assert not ok
     
