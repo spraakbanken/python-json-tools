@@ -2,7 +2,7 @@
 
 import fastjsonschema
 
-from json_validator import exceptions
+from json_tools import exceptions
 
 
 __version__ = '0.1.0'

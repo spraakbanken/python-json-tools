@@ -1,4 +1,4 @@
-import json_validator as jv
+from json_tools import val as jv
 
 
 schema = {
