@@ -6,7 +6,7 @@ from typing import Union
 from json_tools import jsonlib
 
 
-def dump(stream: IO, data: Union[Dict,Iterable]):
+def dump(fp: IO, data: Union[Dict,Iterable]):
     """ Dump array to a file object.
 
     Parameters
@@ -17,26 +17,35 @@ def dump(stream: IO, data: Union[Dict,Iterable]):
         Iterable object to write.
     """
     if isinstance(data, dict):
-        stream.write(jsonlib.dumps(data))
+        fp.write(jsonlib.dumps(data))
         return
-    
-    stream.write('[\n')
+
+    fp.write('[\n')
     it = iter(data)
     try:
         obj = next(it)
-        stream.write(jsonlib.dumps(obj))
+        fp.write(jsonlib.dumps(obj))
     except StopIteration:
         pass
     else:
         for v in it:
-            stream.write(',\n')
-            stream.write(jsonlib.dumps(v))
-    stream.write('\n]')
+            fp.write(',\n')
+            fp.write(jsonlib.dumps(v))
+    fp.write('\n]')
+
+
+def load(fp: IO):
+    data = jsonlib.load(fp)
+    if isinstance(data, list):
+        for obj in data:
+            yield obj
+    else:
+        return data
 
 
 def dump_array(filename, gen):
     with open(filename, 'w') as fp:
-        return dump_array_json(fp, gen)
+        return dump(fp, gen)
 
 if __name__ == '__main__':
     import sys
