@@ -6,14 +6,20 @@ from typing import Union
 from json_tools import jsonlib
 
 
-def dump(stream: IO, data: Union[Dict, Iterable]):
+def dump(fp: IO, data: Union[Dict, Iterable]):
     if isinstance(data, dict):
-        stream.write(jsonlib.dumps(data))
-        stream.write('\n')
+        fp.write(jsonlib.dumps(data))
+        fp.write('\n')
         return
     for it in data:
-        stream.write(jsonlib.dumps(it))
-        stream.write('\n')
+        fp.write(jsonlib.dumps(it))
+        fp.write('\n')
+
+
+def load(fp: IO) -> Iterable:
+    for line in fp:
+        yield jsonlib.loads(line)
+
 
 if __name__ == '__main__':
     import sys
