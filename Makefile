@@ -23,18 +23,17 @@ endif
 PYTHON = ${VENV_BIN}/python
 
 
-venv: venv-created
+venv: ${VENV_NAME}/venv.created
 
-venv-created: ${VENV_NAME}/venv.created
 ${VENV_NAME}/venv.created:
 	test -d ${VENV_NAME} || python -m venv ${VENV_NAME}
-	touch $@
+	@touch $@
 
 ${VENV_NAME}/dev.installed: setup.py setup.cfg tools/pip-requires
-	${PYTHON} -m pip install .[dev]
-	touch $@
+	${VENV_ACTIVATE}; python -m pip install -e .[dev]
+	@touch $@
 
 install-dev: venv ${VENV_NAME}/dev.installed
 
 test: install-dev
-	${PYTHON} -m pytest --cov=json_tools --cov-report=term-missing tests
+	${VENV_ACTIVATE}; pytest --cov=json_tools --cov-report=term-missing tests
