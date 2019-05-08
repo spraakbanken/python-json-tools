@@ -4,7 +4,7 @@ import click
 
 from json_tools import jsonlib
 from json_tools.val import validate
-from json_tools import iter
+import json_tools.iter as jiter
 
 
 @click.command()
@@ -15,15 +15,19 @@ def main(infile, outfile, schema):
     """Validates a json-file with a schema (json-schema.org)."""
     click.echo("Validating {0} with the schema in {1}.".format(infile, schema))
     schema_json = jsonlib.load_from_file(schema)
-    data = iter.load_from_file(infile)
+    data = jiter.load_from_file(infile)
     correct, errors = validate(schema_json, data)
-    iter.dump_to_file(correct, outfile)
+    jiter.dump_to_file(correct, outfile)
     if not errors:
         click.echo("No errors!")
     else:
         (out_root, out_ext) = os.path.splitext(outfile)
         errors_filename = os.path.join(out_root, ".errors", out_ext)
-        iter.dump_to_file(errors, errors_filename)
+        jiter.dump_to_file(errors, errors_filename)
         click.echo("ERRORs found!!!")
         click.echo("Errors are written to {0}".format(errors_filename))
         click.Context.exit(len(errors))
+
+
+if __name__ == '__main__':
+    main()
