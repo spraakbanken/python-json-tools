@@ -1,29 +1,29 @@
-import json
 import os
 
 import click
 
-from json_validator import validate
+from json_tools import jsonlib
+from json_tools.val import validate
+from json_tools import iter
 
 
 @click.command()
-@click.option('--schema', '-s', type=click.File('r'),
-                                        help='Schema to use for validating.')
-@click.argument('infile', required=True, type=click.File('r'))
-@click.argument('outfile', required=True, type=click.File('w'))
+@click.option("--schema", "-s", help="Schema to use for validating.")
+@click.argument("infile", required=True)
+@click.argument("outfile", required=True)
 def main(infile, outfile, schema):
     """Validates a json-file with a schema (json-schema.org)."""
-    click.echo('Validating {0} with the schema in {1}.'.format(infile, schema))
-    schema_json = json.load(schema)
-    data = json.load(infile)
+    click.echo("Validating {0} with the schema in {1}.".format(infile, schema))
+    schema_json = jsonlib.load_from_file(schema)
+    data = iter.load_from_file(infile)
     correct, errors = validate(schema_json, data)
-    json.dump(correct, outfile)
+    iter.dump_to_file(correct, outfile)
     if not errors:
-        click.echo('No errors!')
+        click.echo("No errors!")
     else:
-        errors_filename = os.path.join(outfile.name, '.errors')
-        with open(errors_filename) as errors_file:
-            json.dump(errors, errors_file)
-        click.echo('ERRORs found!!!')
-        click.echo('Errors are written to {0}'.format(errors_filename))
+        (out_root, out_ext) = os.path.splitext(outfile)
+        errors_filename = os.path.join(out_root, ".errors", out_ext)
+        iter.dump_to_file(errors, errors_filename)
+        click.echo("ERRORs found!!!")
+        click.echo("Errors are written to {0}".format(errors_filename))
         click.Context.exit(len(errors))

@@ -1,1 +1,1 @@
-from .jsondiff import compare
+from .jsondiff import compare  # noqa: F401

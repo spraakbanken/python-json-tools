@@ -4,8 +4,8 @@ from json_tools.iter import jsonl_iter as jiter
 
 
 data = [
-    {'a':1},
-    {'a':2},
+    {'a': 1},
+    {'a': 2},
 ]
 
 facit = '{"a": 1}\n{"a": 2}\n'

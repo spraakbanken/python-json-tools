@@ -2,7 +2,6 @@
 
 import fastjsonschema
 
-from typing import Coroutine
 from typing import Dict
 from typing import Generator
 from typing import Iterable
@@ -41,7 +40,7 @@ def streaming_validate(
         data: Union[Dict, Iterable[Dict]],
         *,
         raise_on_error: bool = False
-    ) -> Generator[Tuple, None, Tuple]:
+        ) -> Generator[Tuple, None, Tuple]:
     try:
         validator = fastjsonschema.compile(schema)
     except fastjsonschema.JsonSchemaDefinitionException as e:
@@ -55,7 +54,7 @@ def streaming_validate(
             if raise_on_error:
                 raise exceptions.ValidationException(e.message, data)
             return error(data, e.message)
-    
+
     for orig_obj in data:
         try:
             valid_obj = validator(orig_obj)
@@ -72,7 +71,7 @@ def validate(
         data: Union[Dict, Iterable[Dict]],
         *,
         raise_on_error: bool = False
-    ) -> Tuple[List[Dict], List[Dict]]:
+        ) -> Tuple[List[Dict], List[Dict]]:
     errors = []
     correct = []
 
@@ -90,7 +89,7 @@ def processing_validate(
         *,
         on_ok: Generator[None, Dict, None],
         on_error: Generator[None, Dict, None]
-    ) -> None:
+        ) -> None:
     for ok, error in streaming_validate(schema, data):
         if ok:
             on_ok.send(ok)

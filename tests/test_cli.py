@@ -4,7 +4,7 @@ import pytest
 
 from click.testing import CliRunner
 
-from json_validator import cli
+from json_tools.val import cli
 
 
 def _to_path(filename):
@@ -56,18 +56,26 @@ def test_cli_with_long_option_parameter(runner):
 
 
 def test_cli_with_schema_and_valid_arg(runner):
-    schema = "/home/kristoffer/project/json-validator/tests/schema.json"
-    arg = "/home/kristoffer/project/json-validator/tests/valid.json"
-    result = runner.invoke(cli.main, ['--schema /home/kristoffer/project/json-validator/tests/schema.json /home/kristoffer/project/json-validator/tests/valid.json'])
+    schema = "tests/data/schema_default.json"
+    arg = "tests/valid_array.json"
+    result = runner.invoke(cli.main, [
+        '--schema',
+        schema,
+        arg,
+    ])
     assert result.exit_code == 0
     assert not result.exception
-    assert result.output.strip() == 'Validating tests/{0} with the schema in tests/{1}.'.format(arg, schema)
+    assert (
+        result.output.strip()
+        ==
+        'Validating tests/{0} with the schema in tests/{1}.'.format(arg, schema)
+    )
 
 
 def test_cli_with_schema_and_invalid_type_arg(runner):
-    schema = "schema.json"
-    arg = "invalid_type.json"
-    result = runner.invoke(cli.main, ['--schema schema.json invalid_type.json'])
+    schema = "tests/data/schema_default.json"
+    arg = "tests/data/invalid_type.json"
+    result = runner.invoke(cli.main, ['--schema', schema, arg])
     assert result.exit_code == 0
     assert not result.exception
     assert result.output.strip() == 'Validating {0} with the schema in {1}.'.format(arg, schema)

@@ -1,0 +1,61 @@
+CHANGES
+=======
+
+* update gitignore
+* Stuff
+* rework
+* add sphinx
+
+v0.1.0
+------
+
+* refactor
+* add more tests for diff
+* add more test for jsondiff
+* restructure tests
+* Refactor json\_tools.val
+* add jsonl\_iter tests
+* make tests work
+* stuff
+* update Readme.md
+* restructure
+* setup proj
+* update makefile
+* add pbr
+* restructure
+* add tools
+* rename package
+* some stuff
+* update actions
+* rename actions dir
+* update build & test
+* try build & test
+* add pipenv
+* add test for numeric\_types
+* add sanity test in Result constructor
+* change action-a
+* add github action
+* Update main.workflow
+* add streaming\_validate
+* file stuff
+* add version string in module
+* changed python requirement to 3.5
+* switching to poetry and pyproject.toml
+* mv code to src dir
+* change repo name
+* changes
+* added fastjsonschema as dependency
+* bumped version to 0.0.2
+* addde module docstring
+* Added exceptions
+* Added error\_id
+* Started with exceptions
+* Some initial work
+* tests
+* update tox environments
+* removed empty line
+* Renamed src path to json\_validator
+* cookiecutter setup
+* corrected the json-schema url
+* added link to json-schema.org
+* Initial commit

@@ -1,5 +1,6 @@
 from json_tools import exceptions
 
+
 class JsonValidatorException(exceptions.JsonToolsException):
     """
     Base exception for json_tools.val

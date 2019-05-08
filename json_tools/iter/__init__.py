@@ -13,7 +13,7 @@ def load_from_file(
     elif filetype == 'jsonl':
         _iter = jsonl_iter
     else:
-        suffix = filename.rsplit('.',1)[1]
+        suffix = filename.rsplit('.', 1)[1]
         if suffix in ['jsonl']:
             _iter = jsonl_iter
 
@@ -32,7 +32,7 @@ def dump_to_file(
     elif filetype == 'jsonl':
         _iter = jsonl_iter
     else:
-        suffix = filename.rsplit('.',1)[1]
+        suffix = filename.rsplit('.', 1)[1]
         if suffix in ['jsonl']:
             _iter = jsonl_iter
 
@@ -47,7 +47,6 @@ if __name__ == '__main__':
     ]
 
     for f in files:
-        print(f'reading {f} ...')
+        print('reading {f} ...'.format(f=f))
         for i, o in enumerate(load_from_file(f)):
-            print(f'{i}: {o}')
-
+            print('{i}: {o}'.format(i=i, o=o))

@@ -6,7 +6,7 @@ from typing import Union
 from json_tools import jsonlib
 
 
-def dump(data, fp: IO):
+def dump(data: Union[Dict, Iterable], fp: IO):
     """ Dump array to a file object.
 
     Parameters
@@ -39,7 +39,7 @@ def dump(data, fp: IO):
     fp.write('\n]')
 
 
-def load(fp: IO):
+def load(fp: IO) -> Iterable:
     # Determine type of data
     c = fp.read(1)
     if c != '[':
@@ -49,7 +49,6 @@ def load(fp: IO):
         balance = 0
         start_idx = None
         chunk_size = 0
-        found_obj = False
         while True:
             curr_idx = fp.tell()
             c = fp.read(1)
@@ -60,7 +59,6 @@ def load(fp: IO):
                 break
             # chunk_size += 1
             if c == '{':
-                found_obj = True
                 balance += 1
                 if balance == 1:
                     chunk_size = 1
@@ -74,9 +72,9 @@ def load(fp: IO):
                     # print(f'read chunk {chunk}')
                     yield jsonlib.loads(chunk)
                     chunk_size = 0
-                    found_obj = False
 
             chunk_size += 1
+
 
 def load_eager(fp: IO):
     data = jsonlib.load(fp)
@@ -97,7 +95,6 @@ def dump_to_file(filename, gen):
         return dump(fp, gen)
 
 
-
 def main():
     files = [
         'tests/data/dict.json',
@@ -105,15 +102,15 @@ def main():
     ]
 
     for f in files:
-        print(f'Reading {f} ...')
+        print('Reading {f} ...'.format(f=f))
         for obj in load_from_file(f):
-            print(f'obj = {obj}')
+            print('obj = {obj}'.format(obj=obj))
         print('')
+
 
 if __name__ == '__main__':
     import sys
-    data = [{'a':1},{'a':2}]
+    data = [{'a': 1}, {'a': 2}]
     dump(data, sys.stdout)
     print('')
     main()
-

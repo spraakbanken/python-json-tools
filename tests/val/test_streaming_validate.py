@@ -4,7 +4,7 @@ from json_tools import val as jv
 schema = {
     "type": "object",
     "properties": {
-        "valid" : {
+        "valid": {
             "type": "integer"
         }
     },
@@ -33,8 +33,8 @@ def gen_mixed_data(n):
 def test_valid_data():
     n = 10
     stream = jv.streaming_validate(schema, gen_valid_data(n))
-    
-    for i, (ok, error) in enumerate(stream): 
+
+    for i, (ok, error) in enumerate(stream):
         assert ok
         assert ok['valid'] == i
         assert not error
@@ -58,4 +58,3 @@ def test_mixed_data():
         else:
             assert error
             assert not ok
-    

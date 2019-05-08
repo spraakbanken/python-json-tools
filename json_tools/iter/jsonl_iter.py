@@ -6,7 +6,7 @@ from typing import Union
 from json_tools import jsonlib
 
 
-def dump(data, fp: IO):
+def dump(data: Union[Dict, Iterable], fp: IO):
     if isinstance(data, dict):
         fp.write(jsonlib.dumps(data))
         fp.write('\n')
@@ -38,5 +38,5 @@ def dump_to_file(obj, filename):
 
 if __name__ == '__main__':
     import sys
-    data = [{'a':1},{'a':2}]
+    data = [{'a': 1}, {'a': 2}]
     dump(data, sys.stdout)
