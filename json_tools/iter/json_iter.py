@@ -6,7 +6,7 @@ from typing import Union
 from json_tools import jsonlib
 
 
-def dump(fp: IO, data: Union[Dict,Iterable]):
+def dump(data, fp: IO):
     """ Dump array to a file object.
 
     Parameters
@@ -20,8 +20,13 @@ def dump(fp: IO, data: Union[Dict,Iterable]):
         fp.write(jsonlib.dumps(data))
         return
 
+    try:
+        it = iter(data)
+    except TypeError:
+        fp.write(jsonlib.dumps(data))
+        return
+
     fp.write('[\n')
-    it = iter(data)
     try:
         obj = next(it)
         fp.write(jsonlib.dumps(obj))
@@ -63,15 +68,15 @@ def load(fp: IO):
             elif c == '}':
                 balance -= 1
 
-            if found_obj and balance == 0:
-                fp.seek(start_idx)
-                chunk = fp.read(chunk_size)
-                # print(f'read chunk {chunk}')
-                yield jsonlib.loads(chunk)
-                chunk_size = 0
-                found_obj = False
-            else:
-                chunk_size += 1
+                if balance == 0:
+                    fp.seek(start_idx)
+                    chunk = fp.read(chunk_size)
+                    # print(f'read chunk {chunk}')
+                    yield jsonlib.loads(chunk)
+                    chunk_size = 0
+                    found_obj = False
+
+            chunk_size += 1
 
 def load_eager(fp: IO):
     data = jsonlib.load(fp)
@@ -108,7 +113,7 @@ def main():
 if __name__ == '__main__':
     import sys
     data = [{'a':1},{'a':2}]
-    dump(sys.stdout, data)
-
+    dump(data, sys.stdout)
+    print('')
     main()
 

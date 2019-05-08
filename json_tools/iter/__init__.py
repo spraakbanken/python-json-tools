@@ -43,7 +43,7 @@ if __name__ == '__main__':
     files = [
         'tests/data/dict.json',
         'tests/data/array.json',
-        # 'tests/data/array.jsonl',
+        'tests/data/array.jsonl',
     ]
 
     for f in files:

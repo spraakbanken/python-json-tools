@@ -18,17 +18,17 @@ def gen_data():
 
 def test_dump_dict_stringio():
     out = io.StringIO()
-    jiter.dump(out, data[0])
+    jiter.dump(data[0], out)
     assert out.getvalue() == '{"a": 1}'
-    
-    
+
+
 def test_dump_array_stringio():
     out = io.StringIO()
-    jiter.dump(out, data)
+    jiter.dump(data, out)
     assert facit == out.getvalue()
 
 
 def test_dump_gen_stringio():
     out = io.StringIO()
-    jiter.dump(out, gen_data())
+    jiter.dump(gen_data(), out)
     assert facit == out.getvalue()

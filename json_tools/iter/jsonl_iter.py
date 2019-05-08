@@ -6,13 +6,18 @@ from typing import Union
 from json_tools import jsonlib
 
 
-def dump(fp: IO, data: Union[Dict, Iterable]):
+def dump(data, fp: IO):
     if isinstance(data, dict):
         fp.write(jsonlib.dumps(data))
         fp.write('\n')
         return
-    for it in data:
-        fp.write(jsonlib.dumps(it))
+
+    try:
+        for obj in data:
+            fp.write(jsonlib.dumps(obj))
+            fp.write('\n')
+    except TypeError:
+        fp.write(jsonlib.dumps(data))
         fp.write('\n')
 
 
@@ -21,7 +26,17 @@ def load(fp: IO) -> Iterable:
         yield jsonlib.loads(line)
 
 
+def load_from_file(filename: str):
+    with open(filename, 'r') as fp:
+        yield from load(fp)
+
+
+def dump_to_file(obj, filename):
+    with open(filename, 'w') as fp:
+        dump(obj, fp)
+
+
 if __name__ == '__main__':
     import sys
     data = [{'a':1},{'a':2}]
-    dump(sys.stdout, data)
+    dump(data, sys.stdout)
