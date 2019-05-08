@@ -6,7 +6,7 @@ from typing import Union
 from json_tools import jsonlib
 
 
-def dump(fp: IO, data: Union[Dict, Iterable]):
+def dump(data: Union[Dict, Iterable], fp: IO):
     if isinstance(data, dict):
         fp.write(jsonlib.dumps(data))
         fp.write('\n')
