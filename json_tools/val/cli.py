@@ -1,5 +1,5 @@
 import os
-
+import sys
 import click
 
 from json_tools import jsonlib
@@ -9,8 +9,8 @@ import json_tools.iter as jiter
 
 @click.command()
 @click.option("--schema", "-s", help="Schema to use for validating.")
-@click.argument("infile", required=True)
-@click.argument("outfile", required=True)
+@click.argument("infile", type=click.File('r'))
+@click.argument("outfile", type=click.File('w'))
 def main(infile, outfile, schema):
     """Validates a json-file with a schema (json-schema.org)."""
     click.echo("Validating {0} with the schema in {1}.".format(infile, schema))
