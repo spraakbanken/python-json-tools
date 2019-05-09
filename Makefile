@@ -37,3 +37,12 @@ install-dev: venv ${VENV_NAME}/dev.installed
 
 test: install-dev
 	${VENV_ACTIVATE}; pytest --cov=json_tools --cov=jt_diff --cov=jt_iter --cov=jt_val  --cov-report=term-missing tests
+
+bumpversion-patch:
+	bumpversion patch
+
+bumpversion-minor:
+	bumpversion minor
+
+bumpversion-major:
+	bumpversion major
