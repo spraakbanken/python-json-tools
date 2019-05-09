@@ -1,14 +1,14 @@
 import io
 
-from json_tools.iter import jsonl_iter as jiter
+from jt_iter import json_iter as jiter
 
 
 data = [
-    {'a':1},
-    {'a':2},
+    {'a': 1},
+    {'a': 2},
 ]
 
-facit = '{"a": 1}\n{"a": 2}\n'
+facit = '[\n{"a": 1},\n{"a": 2}\n]'
 
 
 def gen_data():
@@ -19,7 +19,7 @@ def gen_data():
 def test_dump_dict_stringio():
     out = io.StringIO()
     jiter.dump(data[0], out)
-    assert out.getvalue() == '{"a": 1}\n'
+    assert out.getvalue() == '{"a": 1}'
 
 
 def test_dump_array_stringio():
