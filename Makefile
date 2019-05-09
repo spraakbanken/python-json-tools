@@ -42,7 +42,7 @@ VERSION = $(bumpversion --dry-run --list patch | grep old_version | sed -r s."^.
 
 bumpversion-patch:
 	# bumpversion patch
-	$(info version)
+	$(info verion=${VERSION})
 
 bumpversion-minor:
 	bumpversion minor
