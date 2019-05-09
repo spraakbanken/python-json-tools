@@ -38,11 +38,11 @@ install-dev: venv ${VENV_NAME}/dev.installed
 test: install-dev
 	${VENV_ACTIVATE}; pytest --cov=json_tools --cov=jt_diff --cov=jt_iter --cov=jt_val  --cov-report=term-missing tests
 
-VERSION = $(bumpversion --dry-run --list patch | grep old_version | sed -r s."^.*=",,)
+VERSION = $(shell bumpversion --dry-run --list patch | grep current_version | sed -r s/'^.*='//)
 
 bumpversion-patch:
-	# bumpversion patch
-	$(info verion=${VERSION})
+	bumpversion patch
+	${info version=${VERSION}}
 
 bumpversion-minor:
 	bumpversion minor
