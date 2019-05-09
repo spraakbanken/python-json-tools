@@ -75,7 +75,7 @@ def validate(
     errors = []
     correct = []
 
-    for ok, error in streaming_validate(schema, data, raise_on_error):
+    for ok, error in streaming_validate(schema, data, raise_on_error=raise_on_error):
         if ok:
             correct.append(ok)
         else:
