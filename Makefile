@@ -1,4 +1,4 @@
-.PHONY: venv help test
+.PHONY: venv help test bumpversion-minor bumpversion-major bumpversion-patch
 
 .default: help
 
@@ -38,21 +38,15 @@ install-dev: venv ${VENV_NAME}/dev.installed
 test: install-dev
 	${VENV_ACTIVATE}; pytest --cov=json_tools --cov=jt_diff --cov=jt_iter --cov=jt_val  --cov-report=term-missing tests
 
-VERSION_PATCH = $(shell bumpversion --dry-run --list patch | grep new_version | sed -r s/'^.*='//)
-VERSION_MINOR = $(shell bumpversion --dry-run --list minor | grep new_version | sed -r s/'^.*='//)
-VERSION_MAJOR = $(shell bumpversion --dry-run --list major | grep new_version | sed -r s/'^.*='//)
+bumpversion-patch: install-dev
+	${VENV_ACTIVATE}; bump2version patch
 
-bumpversion-patch:
-	bumpversion patch
-	${info version=${VERSION_PATCH}}
-	git tag -a -m "Version ${VERSION_PATCH}" v${VERSION_PATCH}
+bumpversion-minor: install-dev
+	${VENV_ACTIVATE}; bump2version minor
 
-bumpversion-minor:
-	bumpversion minor
-	${info version=${VERSION_MINOR}}
-	git tag -a -m "Version ${VERSION_MINOR}" v${VERSION_MINOR}
+bumpversion-major: install-dev
+	${VENV_ACTIVATE}; bump2version major
 
-bumpversion-major:
-	bumpversion major
-	${info version=${VERSION_MAJOR}}
-	git tag -a -m "Version ${VERSION_MAJOR}" v${VERSION_MAJOR}
+release-patch: bumpversion-patch
+release-minor: bumpversion-minor
+release-major: bumpversion-major
