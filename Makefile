@@ -38,14 +38,21 @@ install-dev: venv ${VENV_NAME}/dev.installed
 test: install-dev
 	${VENV_ACTIVATE}; pytest --cov=json_tools --cov=jt_diff --cov=jt_iter --cov=jt_val  --cov-report=term-missing tests
 
-VERSION = $(shell bumpversion --dry-run --list patch | grep current_version | sed -r s/'^.*='//)
+VERSION_PATCH = $(shell bumpversion --dry-run --list patch | grep new_version | sed -r s/'^.*='//)
+VERSION_MINOR = $(shell bumpversion --dry-run --list minor | grep new_version | sed -r s/'^.*='//)
+VERSION_MAJOR = $(shell bumpversion --dry-run --list major | grep new_version | sed -r s/'^.*='//)
 
 bumpversion-patch:
 	bumpversion patch
-	${info version=${VERSION}}
+	${info version=${VERSION_PATCH}}
+	git tag -a -m "Version ${VERSION_PATCH}" v${VERSION_PATCH}
 
 bumpversion-minor:
 	bumpversion minor
+	${info version=${VERSION_MINOR}}
+	git tag -a -m "Version ${VERSION_MINOR}" v${VERSION_MINOR}
 
 bumpversion-major:
 	bumpversion major
+	${info version=${VERSION_MAJOR}}
+	git tag -a -m "Version ${VERSION_MAJOR}" v${VERSION_MAJOR}
