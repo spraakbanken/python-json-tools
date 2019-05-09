@@ -4,7 +4,7 @@ import pytest
 
 from click.testing import CliRunner
 
-from json_tools.val import cli
+from json_tools import cli
 
 
 def _to_path(filename):
@@ -21,35 +21,35 @@ def runner():
 
 
 def test_cli(runner):
-    result = runner.invoke(cli.main)
-    assert result.exit_code == 2
-    assert result.exception
+    result = runner.invoke(cli.cli)
+    assert result.exit_code == 0
+    assert not result.exception
     # assert result.output.strip() == 'Hello, world.'
 
 
 def test_cli_with_short_option_no_parameter(runner):
-    result = runner.invoke(cli.main, ['-s'])
+    result = runner.invoke(cli.cli, ['-s'])
     assert result.exception
     assert result.exit_code == 2
     # assert result.output.strip() == 'Howdy, world.'
 
 
 def test_cli_with_long_option_no_parameter(runner):
-    result = runner.invoke(cli.main, ['--schema'])
+    result = runner.invoke(cli.cli, ['--schema'])
     assert result.exception
     assert result.exit_code == 2
     # assert result.output.strip() == 'Howdy, world.'
 
 
 def test_cli_with_short_option_parameter(runner):
-    result = runner.invoke(cli.main, ['-s schema.json'])
+    result = runner.invoke(cli.cli, ['-s schema.json'])
     assert result.exception
     assert result.exit_code == 2
     # assert result.output.strip() == 'Howdy, world.'
 
 
 def test_cli_with_long_option_parameter(runner):
-    result = runner.invoke(cli.main, ['--schema schema.json'])
+    result = runner.invoke(cli.cli, ['--schema schema.json'])
     assert result.exception
     assert result.exit_code == 2
     # assert result.output.strip() == 'Howdy, world.'
@@ -58,10 +58,12 @@ def test_cli_with_long_option_parameter(runner):
 def test_cli_with_schema_and_valid_arg(runner):
     schema = "tests/data/schema_default.json"
     arg = "tests/valid_array.json"
-    result = runner.invoke(cli.main, [
+    result = runner.invoke(cli.cli, [
+        'validate',
         '--schema',
         schema,
         arg,
+        '-'
     ])
     assert result.exit_code == 0
     assert not result.exception
@@ -75,7 +77,7 @@ def test_cli_with_schema_and_valid_arg(runner):
 def test_cli_with_schema_and_invalid_type_arg(runner):
     schema = "tests/data/schema_default.json"
     arg = "tests/data/invalid_type.json"
-    result = runner.invoke(cli.main, ['--schema', schema, arg])
+    result = runner.invoke(cli.cli, ['--schema', schema, arg, '-'])
     assert result.exit_code == 0
     assert not result.exception
     assert result.output.strip() == 'Validating {0} with the schema in {1}.'.format(arg, schema)
@@ -84,7 +86,7 @@ def test_cli_with_schema_and_invalid_type_arg(runner):
 def test_cli_with_schema_and_invalid_property_arg(runner):
     schema = "schema.json"
     arg = "invalid_property.json"
-    result = runner.invoke(cli.main, ['--schema {0} {1}'.format(schema, arg)])
+    result = runner.invoke(cli.cli, ['--schema',schema, arg, '-'])
     assert result.exit_code == 0
     assert not result.exception
     assert result.output.strip() == 'Validating {0} with the schema in {1}.'.format(arg, schema)

@@ -4,26 +4,26 @@ Tools for working with json (especially) json-arrays.
 
 Uses `ujson` if present, otherwise standard `json`.
 
-## json-iter (`lib: json_tools.iter`)
+## json-iter (`lib: jt_iter`)
 
 Allows you to use `json.load` and `json.dump` with
 both json and json-lines files as well as dumping generators.
 
 Regular functions and async functions.
 
-## json-val (`lib: json_tools.val`)
+## json-val (`lib: jt_val`)
 
 Allows you to validate iterables of json-objects
 according to [json-schema](https://wwww.json-schema.org)
 
 Regular and async functions.
 
-## json-diff (`lib: json_tools.diff`)
+## json-diff (`lib: jt_diff`)
 
 Allows you to compare two json-objects and get a report
 how they differ, if they do.
 
-## json-validator
+## json-val
 
 Command-line tool to validate a json-file with a schema [json-schema](http://json-schema.org).
 

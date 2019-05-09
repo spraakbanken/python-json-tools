@@ -3,7 +3,7 @@ from typing import IO
 from typing import Iterable
 from typing import Union
 
-from json_tools import jsonlib
+from jt_iter import jsonlib
 
 
 def dump(data: Union[Dict, Iterable], fp: IO):

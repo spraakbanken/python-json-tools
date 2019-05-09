@@ -1,6 +1,6 @@
 import pytest
 
-from json_tools import diff
+import jt_diff as diff
 
 objs = [
     {'a': 1},  # 0

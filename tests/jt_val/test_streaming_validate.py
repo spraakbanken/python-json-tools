@@ -1,4 +1,4 @@
-from json_tools import val as jv
+import jt_val as jv
 
 
 schema = {

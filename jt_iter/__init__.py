@@ -1,5 +1,5 @@
-from json_tools.iter import json_iter
-from json_tools.iter import jsonl_iter
+from jt_iter import json_iter
+from jt_iter import jsonl_iter
 
 
 def load_from_file(

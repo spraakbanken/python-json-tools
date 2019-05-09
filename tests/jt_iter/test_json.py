@@ -1,6 +1,6 @@
 import io
 
-from json_tools.iter import json_iter as jiter
+from jt_iter import json_iter as jiter
 
 
 data = [
