@@ -86,12 +86,12 @@ def load_eager(fp: IO):
 
 
 def load_from_file(filename: str):
-    with open(filename, 'r') as fp:
+    with open(filename, 'r', encoding='utf_8') as fp:
         yield from load(fp)
 
 
 def dump_to_file(filename, gen):
-    with open(filename, 'w') as fp:
+    with open(filename, 'w', encoding='utf_8') as fp:
         return dump(fp, gen)
 
 

@@ -1,4 +1,4 @@
-import json
+from jt_iter import jsonlib
 
 # Borrow from http://djangosnippets.org/snippets/2247/
 # and inspired by https://github.com/jclulow/jsondiff
@@ -86,10 +86,7 @@ def get_content(location):
     if isinstance(location, dict):  # compatability with python3
         return location
 
-    content = open(location, 'r').read()
-    if content is None:
-        raise Exception("Could not load content for " + location)
-    return json.loads(content)
+    return jsonlib.load_from_file(location)
 
 
 def compare(location1, location2, print_all=False):
