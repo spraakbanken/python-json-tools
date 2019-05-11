@@ -1,11 +1,44 @@
 # python-json-tools
 
-## json-iter
+Tools for working with json (especially) json-arrays.
 
-## json-validator
+Uses `ujson` if present, otherwise standard `json`.
 
-Validates a json-file with a schema [json-schema](http://json-schema.org).
+## json-iter (`lib: jt_iter`)
 
+Allows you to use `json.load` and `json.dump` with
+both json and json-lines files as well as dumping generators.
+
+Regular functions and async functions.
+
+## json-val (`lib: jt_val`)
+
+Allows you to validate iterables of json-objects
+according to [json-schema](https://wwww.json-schema.org)
+
+Regular and async functions.
+
+## json-diff (`lib: jt_diff`)
+
+Allows you to compare two json-objects and get a report
+how they differ, if they do.
+
+## json-val
+
+Command-line tool to validate a json-file with a schema [json-schema](http://json-schema.org).
+
+# Development
+
+After cloning the repo, just run
+```
+$ make test
+```
+to setup a virtual environment, 
+install dev dependencies
+and run the unit tests.
+
+*Note:* If you run the command in a activated virtual environment,
+that environment is used instead.
 
 # Installation
 
