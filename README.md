@@ -1,5 +1,8 @@
 # python-json-tools
 
+[![Build Status](https://travis-ci.org/spraakbanken/python-json-tools.svg?branch=master)](https://travis-ci.org/spraakbanken/python-json-tools)
+[![codecov](https://codecov.io/gh/spraakbanken/python-json-tools/branch/master/graph/badge.svg)](https://codecov.io/gh/spraakbanken/python-json-tools) 
+
 Tools for working with json (especially) json-arrays.
 
 Uses `ujson` if present, otherwise standard `json`.
