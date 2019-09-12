@@ -21,6 +21,11 @@ def test_dump_dict_stringio():
     jiter.dump(data[0], out)
     assert out.getvalue() == '{"a": 1}\n'
 
+    out.seek(0)
+    for i in jiter.load(out):
+        print("i = {i}".format(i=i))
+        assert i == data[0]
+
 
 def test_dump_array_stringio():
     out = io.StringIO()
