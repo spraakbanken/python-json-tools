@@ -1,15 +1,9 @@
-import os
 from typing import Iterable
 from typing import IO
 
 from jt_iter import json_iter
 from jt_iter import jsonl_iter
-
-
-def _is_jsonl(p: str):
-    root, suffix = os.path.splitext(p)
-    # print('suffix = {suffix}'.format(suffix=suffix))
-    return suffix in ['.jsonl']
+from jt_iter import utils
 
 
 def load(
@@ -23,7 +17,7 @@ def load(
     elif file_type == 'jsonl':
         _iter = jsonl_iter
     else:
-        if _is_jsonl(fp.name):
+        if utils.is_jsonl(fp.name):
             _iter = jsonl_iter
 
     yield from _iter.load(fp)
@@ -40,7 +34,7 @@ def load_from_file(
     elif filetype == 'jsonl':
         _iter = jsonl_iter
     else:
-        if _is_jsonl(filename):
+        if utils.is_jsonl(filename):
             _iter = jsonl_iter
 
     yield from _iter.load_from_file(filename)
@@ -58,7 +52,7 @@ def dump(
     elif filetype == 'jsonl':
         _iter = jsonl_iter
     else:
-        if _is_jsonl(fp.name):
+        if utils.is_jsonl(fp.name):
             _iter = jsonl_iter
 
     _iter.dump(in_iter_, fp)
@@ -76,7 +70,7 @@ def dump_to_file(
     elif filetype == 'jsonl':
         _iter = jsonl_iter
     else:
-        if _is_jsonl(filename):
+        if utils.is_jsonl(filename):
             _iter = jsonl_iter
 
     _iter.dump_to_file(in_iter_, filename)
