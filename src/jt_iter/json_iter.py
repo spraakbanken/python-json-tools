@@ -69,11 +69,23 @@ def load(fp: IO) -> Iterable:
                 if balance == 0:
                     fp.seek(start_idx)
                     chunk = fp.read(chunk_size)
-                    # print(f'read chunk {chunk}')
+                    # print(f'read chunk "{chunk}"')
                     yield jsonlib.loads(chunk)
                     chunk_size = 0
 
             chunk_size += 1
+
+        # print(f"balance = {balance}")
+        # print(f"start_idx = {start_idx}")
+        # print(f"chunk_size = {chunk_size}")
+        if not start_idx:
+            fp.seek(0)
+            json_data = jsonlib.load(fp)
+            if isinstance(json_data, list):
+                for json_obj in json_data:
+                    yield json_obj
+            else:
+                yield json_data
 
 
 def load_eager(fp: IO):
