@@ -9,12 +9,12 @@ from jt_iter import utils
 def load(
     fp: IO,
     *,
-    file_type=None
+    filetype=None
 ) -> Iterable:
     _iter = json_iter
-    if file_type == 'json':
+    if filetype == 'json':
         pass
-    elif file_type == 'jsonl':
+    elif filetype == 'jsonl':
         _iter = jsonl_iter
     else:
         if utils.is_jsonl(fp.name):
