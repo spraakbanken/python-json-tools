@@ -13,3 +13,7 @@ def test_dump_int_stringio(data, facit, filetype):
     out = io.StringIO()
     jt_iter.dump(data, out, filetype=filetype)
     assert out.getvalue() == facit
+
+    for i in jt_iter.load(out, filetype=filetype):
+        print("i = {i}".format(i=i))
+        assert i == data
