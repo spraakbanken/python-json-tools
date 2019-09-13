@@ -63,5 +63,5 @@ def test_compare(i1, i2, facit):
 
     assert len(r) == len(facit)
 
-    for a, b in zip(r, facit):
-        assert a == b
+    for a in r:
+        assert a in facit
