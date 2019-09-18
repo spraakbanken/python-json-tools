@@ -1,5 +1,5 @@
 
-name: PBuild
+name: Build
 
 on: [push]
 
