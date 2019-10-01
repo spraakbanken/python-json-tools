@@ -36,7 +36,7 @@ ${VENV_NAME}/dev.installed: setup.py setup.cfg tools/pip-requires
 install-dev: venv ${VENV_NAME}/dev.installed
 
 test: install-dev
-	${VENV_ACTIVATE}; pytest --cov=src  --cov-report=term-missing tests
+	${VENV_ACTIVATE}; pytest --cov=sb_json_tools  --cov-report=term-missing tests
 
 bumpversion-patch: install-dev
 	${VENV_ACTIVATE}; bump2version patch
