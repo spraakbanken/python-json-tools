@@ -3,6 +3,7 @@
 [![Build Status](https://travis-ci.org/spraakbanken/python-json-tools.svg?branch=master)](https://travis-ci.org/spraakbanken/python-json-tools)
 [![codecov](https://codecov.io/gh/spraakbanken/python-json-tools/branch/master/graph/badge.svg)](https://codecov.io/gh/spraakbanken/python-json-tools)
 [![Build Status](https://github.com/spraakbanken/python-json-tools/workflows/Build/badge.svg)](https://github.com/spraakbanken/python-json-tools/actions)
+[![PyPI status](https://badge.fury.io/py/coverage.svg)](https://pypi.org/projects/sb-json-tools)
 
 Tools for working with json (especially) json-arrays.
 
