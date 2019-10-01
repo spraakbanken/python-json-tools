@@ -1,4 +1,4 @@
-import jt_val as jv
+from sb_json_tools import jt_val as jv
 
 
 schema = {

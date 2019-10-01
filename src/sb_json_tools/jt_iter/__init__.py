@@ -1,9 +1,9 @@
 from typing import Iterable
 from typing import IO
 
-from jt_iter import json_iter
-from jt_iter import jsonl_iter
-from jt_iter import utils
+from . import json_iter
+from . import jsonl_iter
+from . import utils
 
 
 def load(

@@ -1,4 +1,4 @@
-from json_tools import exceptions
+from sb_json_tools import exceptions
 
 
 class JsonValidatorException(exceptions.JsonToolsException):

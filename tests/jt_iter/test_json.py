@@ -1,7 +1,7 @@
 import io
 import itertools
 
-from jt_iter import json_iter as jiter
+from sb_json_tools.jt_iter import json_iter as jiter
 
 
 data = [

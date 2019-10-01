@@ -1,6 +1,6 @@
 import io
 
-from jt_iter import jsonl_iter as jiter
+from sb_json_tools.jt_iter import jsonl_iter as jiter
 
 
 data = [

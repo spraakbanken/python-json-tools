@@ -3,7 +3,7 @@ import itertools
 
 import pytest
 
-import jt_iter
+from sb_json_tools import jt_iter
 
 
 @pytest.mark.parametrize("data,facit,filetype", [

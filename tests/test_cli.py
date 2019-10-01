@@ -4,7 +4,7 @@ import pytest
 
 from click.testing import CliRunner
 
-from json_tools import cli
+from sb_json_tools import cli
 
 
 def _to_path(filename):

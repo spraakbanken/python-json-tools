@@ -3,9 +3,9 @@ import sys
 
 import click
 
-from jt_iter import jsonlib
-import jt_val
-import jt_iter
+from sb_json_tools import jsonlib
+from sb_json_tools import jt_val
+from sb_json_tools import jt_iter
 
 
 @click.group()

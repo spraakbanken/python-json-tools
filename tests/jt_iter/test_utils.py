@@ -1,4 +1,4 @@
-from jt_iter.utils import is_jsonl
+from sb_json_tools.jt_iter.utils import is_jsonl
 
 
 def test_jsonl():

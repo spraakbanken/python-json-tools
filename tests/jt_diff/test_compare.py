@@ -1,6 +1,6 @@
 import pytest
 
-import jt_diff as diff
+from sb_json_tools import jt_diff as diff
 
 objs = [
     {'a': 1},  # 0
