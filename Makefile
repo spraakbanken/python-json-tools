@@ -38,6 +38,9 @@ install-dev: venv ${VENV_NAME}/dev.installed
 test: install-dev
 	${VENV_ACTIVATE}; pytest --cov=sb_json_tools  --cov-report=term-missing tests
 
+lint: install-dev
+	${VENV_ACTIVATE}; pylint --rcfile=.pylintrc sb_json_tools tests
+
 bumpversion-patch: install-dev
 	${VENV_ACTIVATE}; bump2version patch
 
