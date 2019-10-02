@@ -104,7 +104,7 @@ def load_from_file(filename: str):
 
 def dump_to_file(filename, gen):
     with open(filename, 'w') as fp:
-        return dump(fp, gen)
+        return dump(gen, fp)
 
 
 def main():
