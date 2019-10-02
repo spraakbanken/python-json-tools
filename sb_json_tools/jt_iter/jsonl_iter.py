@@ -34,9 +34,3 @@ def load_from_file(filename: str):
 def dump_to_file(obj, filename):
     with open(filename, 'w') as fp:
         dump(obj, fp)
-
-
-if __name__ == '__main__':
-    import sys
-    data = [{'a': 1}, {'a': 2}]
-    dump(data, sys.stdout)

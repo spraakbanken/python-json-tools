@@ -92,6 +92,24 @@ def get_content(location):
     return json.loads(content)
 
 
+def compare_gen(location1, location2, print_all=False):
+    json1 = get_content(location1)
+    json2 = get_content(location2)
+    diff1 = Diff(json1, json2, True).difference
+    diff2 = Diff(json2, json1, False).difference
+    for type_, path, before, after in diff1:
+        if before and after:
+            action = "TYPECHANGE" if type_ == "TYPE" else "CHANGE"
+            yield {'type': action, 'field': path, 'before': before, 'after': after}
+        elif before:
+            yield {'type': 'REMOVED', 'field': path, 'before': before}
+        elif print_all:
+            # changes should be caught in the first if clause, additions below
+            yield {'type': 'CHANGE', 'field': path, 'after': after, 'before': before}
+    for type_, path, after, before in diff2:
+        yield {'type': 'ADDED', 'field': path, 'after': after}
+
+
 def compare(location1, location2, print_all=False):
     json1 = get_content(location1)
     json2 = get_content(location2)

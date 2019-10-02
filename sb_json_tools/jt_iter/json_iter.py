@@ -1,3 +1,4 @@
+""" Handle JSON lazy. """
 from typing import Dict
 from typing import IO
 from typing import Iterable
@@ -106,24 +107,3 @@ def load_from_file(filename: str):
 def dump_to_file(filename, gen):
     with open(filename, 'w') as fp:
         return dump(gen, fp)
-
-
-def main():
-    files = [
-        'tests/data/dict.json',
-        'tests/data/array.json',
-    ]
-
-    for f in files:
-        print('Reading {f} ...'.format(f=f))
-        for obj in load_from_file(f):
-            print('obj = {obj}'.format(obj=obj))
-        print('')
-
-
-if __name__ == '__main__':
-    import sys
-    data = [{'a': 1}, {'a': 2}]
-    dump(data, sys.stdout)
-    print('')
-    main()
