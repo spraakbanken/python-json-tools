@@ -3,10 +3,15 @@ from typing import IO
 from typing import Iterable
 from typing import Union
 
+import codecs
+
 from sb_json_tools import jsonlib
 
 
 def dump(data: Union[Dict, Iterable], fp: IO):
+    if isinstance(fp.read(0), bytes):
+        fp = codecs.getwriter('utf-8')(fp)
+
     if isinstance(data, dict):
         fp.write(jsonlib.dumps(data))
         fp.write('\n')

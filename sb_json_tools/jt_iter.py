@@ -9,12 +9,12 @@ from . import utils
 def load(
     fp: IO,
     *,
-    filetype=None
+    file_type=None
 ) -> Iterable:
     _iter = json_iter
-    if filetype == 'json':
+    if file_type == 'json':
         pass
-    elif filetype == 'jsonl':
+    elif file_type == 'jsonl':
         _iter = jsonl_iter
     else:
         if utils.is_jsonl(fp.name):
@@ -26,12 +26,12 @@ def load(
 def load_from_file(
         filename: str,
         *,
-        filetype=None
+        file_type=None
         ):
     _iter = json_iter
-    if filetype == 'json':
+    if file_type == 'json':
         pass
-    elif filetype == 'jsonl':
+    elif file_type == 'jsonl':
         _iter = jsonl_iter
     else:
         if utils.is_jsonl(filename):
@@ -44,12 +44,12 @@ def dump(
         in_iter_,
         fp: IO,
         *,
-        filetype=None
+        file_type=None
         ):
     _iter = json_iter
-    if filetype == 'json':
+    if file_type == 'json':
         pass
-    elif filetype == 'jsonl':
+    elif file_type == 'jsonl':
         _iter = jsonl_iter
     else:
         if utils.is_jsonl(fp.name):
@@ -62,12 +62,12 @@ def dump_to_file(
         in_iter_,
         filename: str,
         *,
-        filetype=None
+        file_type=None
         ):
     _iter = json_iter
-    if filetype == 'json':
+    if file_type == 'json':
         pass
-    elif filetype == 'jsonl':
+    elif file_type == 'jsonl':
         _iter = jsonl_iter
     else:
         if utils.is_jsonl(filename):

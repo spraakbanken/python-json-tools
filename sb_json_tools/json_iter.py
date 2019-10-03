@@ -4,6 +4,10 @@ from typing import IO
 from typing import Iterable
 from typing import Union
 
+import codecs
+
+import ijson
+
 from sb_json_tools import jsonlib
 
 
@@ -17,6 +21,9 @@ def dump(data: Union[Dict, Iterable], fp: IO):
     data :
         Iterable object to write.
     """
+    if isinstance(fp.read(0), bytes):
+        fp = codecs.getwriter('utf-8')(fp)
+
     if isinstance(data, dict):
         fp.write(jsonlib.dumps(data))
         return
@@ -41,52 +48,58 @@ def dump(data: Union[Dict, Iterable], fp: IO):
 
 
 def load(fp: IO) -> Iterable:
-    # Determine type of data
-    c = fp.read(1)
-    if c != '[':
-        fp.seek(0)
-        yield jsonlib.load(fp)
-    else:
-        balance = 0
-        start_idx = None
-        chunk_size = 0
-        while True:
-            curr_idx = fp.tell()
-            c = fp.read(1)
-            # print(f'c = {c}')
-            if not c:
-                # print('End of file')
+    yield from ijson.items(fp, 'item')
+    # return
+    # # Determine type of data
+    # c = fp.read(1)
+    # if c != '[':
+    #     fp.seek(0)
+    #     print("json_iter.load: use jsonlib.")
+    #     yield jsonlib.load(fp)
+    # else:
+    #     fp.seek(0)
+    #     print("json_iter.load: use ijson.")
+    #     yield from ijson.items(fp, 'item')
+        # balance = 0
+        # start_idx = None
+        # chunk_size = 0
+        # while True:
+        #     curr_idx = fp.tell()
+        #     c = fp.read(1)
+        #     # print(f'c = {c}')
+        #     if not c:
+        #         # print('End of file')
 
-                break
-            # chunk_size += 1
-            if c == '{':
-                balance += 1
-                if balance == 1:
-                    chunk_size = 1
-                    start_idx = curr_idx
-            elif c == '}':
-                balance -= 1
+        #         break
+        #     # chunk_size += 1
+        #     if c == '{':
+        #         balance += 1
+        #         if balance == 1:
+        #             chunk_size = 1
+        #             start_idx = curr_idx
+        #     elif c == '}':
+        #         balance -= 1
 
-                if balance == 0:
-                    fp.seek(start_idx)
-                    chunk = fp.read(chunk_size)
-                    # print(f'read chunk "{chunk}"')
-                    yield jsonlib.loads(chunk)
-                    chunk_size = 0
+        #         if balance == 0:
+        #             fp.seek(start_idx)
+        #             chunk = fp.read(chunk_size)
+        #             # print(f'read chunk "{chunk}"')
+        #             yield jsonlib.loads(chunk)
+        #             chunk_size = 0
 
-            chunk_size += 1
+        #     chunk_size += 1
 
-        # print(f"balance = {balance}")
-        # print(f"start_idx = {start_idx}")
-        # print(f"chunk_size = {chunk_size}")
-        if not start_idx:
-            fp.seek(0)
-            json_data = jsonlib.load(fp)
-            if isinstance(json_data, list):
-                for json_obj in json_data:
-                    yield json_obj
-            else:
-                yield json_data
+        # # print(f"balance = {balance}")
+        # # print(f"start_idx = {start_idx}")
+        # # print(f"chunk_size = {chunk_size}")
+        # if not start_idx:
+        #     fp.seek(0)
+        #     json_data = jsonlib.load(fp)
+        #     if isinstance(json_data, list):
+        #         for json_obj in json_data:
+        #             yield json_obj
+        #     else:
+        #         yield json_data
 
 
 def load_eager(fp: IO):
@@ -98,11 +111,15 @@ def load_eager(fp: IO):
         return data
 
 
-def load_from_file(filename: str):
-    with open(filename, 'r') as fp:
+def load_from_file(file_name: str, *, file_mode: str = None):
+    if not file_mode:
+        file_mode = "br"
+    with open(file_name, file_mode) as fp:
         yield from load(fp)
 
 
-def dump_to_file(filename, gen):
-    with open(filename, 'w') as fp:
+def dump_to_file(gen: Iterable, file_name: str, *, file_mode: str = None):
+    if not file_mode:
+        file_mode = "bw"
+    with open(file_name, file_mode) as fp:
         return dump(gen, fp)
