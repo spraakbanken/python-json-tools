@@ -7,8 +7,8 @@ from click.testing import CliRunner
 from sb_json_tools import cli
 
 
-def _to_path(filename):
-    return os.path.join(os.path.dirname(__file__), filename)
+def _to_path(file_name):
+    return os.path.join(os.path.dirname(__file__), file_name)
 
 
 def _invoke_commad(schema, arg):

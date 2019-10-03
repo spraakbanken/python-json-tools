@@ -49,57 +49,6 @@ def dump(data: Union[Dict, Iterable], fp: IO):
 
 def load(fp: IO) -> Iterable:
     yield from ijson.items(fp, 'item')
-    # return
-    # # Determine type of data
-    # c = fp.read(1)
-    # if c != '[':
-    #     fp.seek(0)
-    #     print("json_iter.load: use jsonlib.")
-    #     yield jsonlib.load(fp)
-    # else:
-    #     fp.seek(0)
-    #     print("json_iter.load: use ijson.")
-    #     yield from ijson.items(fp, 'item')
-        # balance = 0
-        # start_idx = None
-        # chunk_size = 0
-        # while True:
-        #     curr_idx = fp.tell()
-        #     c = fp.read(1)
-        #     # print(f'c = {c}')
-        #     if not c:
-        #         # print('End of file')
-
-        #         break
-        #     # chunk_size += 1
-        #     if c == '{':
-        #         balance += 1
-        #         if balance == 1:
-        #             chunk_size = 1
-        #             start_idx = curr_idx
-        #     elif c == '}':
-        #         balance -= 1
-
-        #         if balance == 0:
-        #             fp.seek(start_idx)
-        #             chunk = fp.read(chunk_size)
-        #             # print(f'read chunk "{chunk}"')
-        #             yield jsonlib.loads(chunk)
-        #             chunk_size = 0
-
-        #     chunk_size += 1
-
-        # # print(f"balance = {balance}")
-        # # print(f"start_idx = {start_idx}")
-        # # print(f"chunk_size = {chunk_size}")
-        # if not start_idx:
-        #     fp.seek(0)
-        #     json_data = jsonlib.load(fp)
-        #     if isinstance(json_data, list):
-        #         for json_obj in json_data:
-        #             yield json_obj
-        #     else:
-        #         yield json_data
 
 
 def load_eager(fp: IO):
