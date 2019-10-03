@@ -1,4 +1,5 @@
-import json
+""" Diff two JSON-files (or dict's). """
+from sb_json_tools import jsonlib
 
 # Borrow from http://djangosnippets.org/snippets/2247/
 # and inspired by https://github.com/jclulow/jsondiff
@@ -89,10 +90,11 @@ def get_content(location):
     content = open(location, 'r').read()
     if content is None:
         raise Exception("Could not load content for " + location)
-    return json.loads(content)
+    return jsonlib.loads(content)
 
 
 def compare_gen(location1, location2, print_all=False):
+    """ Compare two JSON files (or dicts) and yield the result. """
     json1 = get_content(location1)
     json2 = get_content(location2)
     diff1 = Diff(json1, json2, True).difference
@@ -111,22 +113,9 @@ def compare_gen(location1, location2, print_all=False):
 
 
 def compare(location1, location2, print_all=False):
-    json1 = get_content(location1)
-    json2 = get_content(location2)
-    diff1 = Diff(json1, json2, True).difference
-    diff2 = Diff(json2, json1, False).difference
-    diffs = []
-    for type_, path, before, after in diff1:
-        if before and after:
-            action = "TYPECHANGE" if type_ == "TYPE" else "CHANGE"
-            diffs.append({'type': action, 'field': path,
-                          'before': before, 'after': after})
-        elif before:
-            diffs.append({'type': 'REMOVED', 'field': path, 'before': before})
-        elif print_all:
-            # changes should be caught in the first if clause, additions below
-            diffs.append({'type': 'CHANGE', 'field': path,
-                          'after': after, 'before': before})
-    for type_, path, after, before in diff2:
-        diffs.append({'type': 'ADDED', 'field': path, 'after': after})
-    return diffs
+    """
+    Compare two JSON files (or dicts).
+
+    Wraps the generator version `compare_gen`.
+    """
+    return list(compare_gen(location1, location2, print_all=print_all))
