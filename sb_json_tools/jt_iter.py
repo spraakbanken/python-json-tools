@@ -27,7 +27,7 @@ def load_from_file(
         file_name: str,
         *,
         file_type: str = None,
-        file_mode: str = None,
+        file_mode: str = None
         ):
     _iter = json_iter
     if file_type == 'json':
@@ -45,7 +45,7 @@ def dump(
         in_iter_,
         fp: IO,
         *,
-        file_type: str = None,
+        file_type: str = None
         ):
     _iter = json_iter
     if file_type == 'json':
@@ -64,8 +64,8 @@ def dump_to_file(
         file_name: str,
         *,
         file_type=None,
-        file_mode: str = None,
-        ):
+        file_mode: str = None
+):
     _iter = json_iter
     if file_type == 'json':
         pass
