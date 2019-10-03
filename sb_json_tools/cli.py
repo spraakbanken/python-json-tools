@@ -1,4 +1,3 @@
-__version__ = '0.2.8'
 import sys
 
 import click
@@ -6,6 +5,9 @@ import click
 from sb_json_tools import jsonlib
 from sb_json_tools import jt_val
 from sb_json_tools import jt_iter
+
+
+__version__ = '0.2.8'
 
 
 @click.group()
