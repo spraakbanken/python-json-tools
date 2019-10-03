@@ -1,9 +1,10 @@
 import io
 import itertools
+import json
 
 import pytest
 
-from sb_json_tools.jt_iter import json_iter, jsonl_iter
+from sb_json_tools import json_iter, jsonl_iter
 
 
 DATA = [
@@ -18,6 +19,13 @@ JSONL_FACIT = '{"a": 1}\n{"a": 2}\n'
 def gen_data():
     for i in DATA:
         yield i
+
+
+def compare_iters(it1, it2):
+    for i1, i2 in itertools.zip_longest(it1, it2):
+        assert i1 is not None
+        assert i2 is not None
+        assert i1 == i2
 
 
 @pytest.mark.parametrize(
@@ -51,11 +59,7 @@ def test_dump_array_stringio(it, facit):
     assert facit == out.getvalue()
 
     out.seek(0)
-    for i, f in itertools.zip_longest(it.load(out), DATA):
-        assert i is not None
-        assert f is not None
-        print("i = {i}".format(i=i))
-        assert i == f
+    compare_iters(it.load(out), DATA)
 
 
 @pytest.mark.parametrize(
@@ -69,4 +73,19 @@ def test_dump_gen_stringio(it, facit):
     out = io.StringIO()
     it.dump(gen_data(), out)
     assert facit == out.getvalue()
+
+
+@pytest.mark.parametrize(
+    "it,filename,facit",
+    [
+        (json_iter, "tests/data/array.json", None),
+    ]
+)
+def test_load_filename(it, filename: str, facit):
+    if not facit:
+        facit = filename
+    with open(facit) as fp:
+        facit_it = json.load(fp)
+    test_it = it.load_from_file(filename)
+    compare_iters(test_it, facit_it)
 
