@@ -5,6 +5,7 @@ import click
 from sb_json_tools import jsonlib
 from sb_json_tools import jt_val
 from sb_json_tools import jt_iter
+from sb_json_tools import jsondiff
 
 
 __version__ = '0.4.0'
@@ -36,13 +37,25 @@ def validate(infile, outfile, schema):
 
 
 @cli.command()
-@click.argument('src', type=click.File('r'))
-@click.argument('dst', type=click.File('w'))
+@click.argument('src')
+@click.argument('dst')
 def convert(src, dst):
-    jt_iter.dump(
-        jt_iter.load(src),
+    jt_iter.dump_to_file(
+        jt_iter.load_from_file(src),
         dst
     )
+
+
+@cli.command()
+@click.option("--output", "-o", help="Write the result to this file..")
+@click.argument('arg1')
+@click.argument('arg2')
+def diff(arg1, arg2, output):
+    objects = jsondiff.compare_gen(arg1, arg2)
+    if not output or output == "--":
+        jsonl_iter.dump(objects, sys.stdout)
+    else:
+        jt_iter.dump_to_file(objects, output)
 
 
 if __name__ == '__main__':
