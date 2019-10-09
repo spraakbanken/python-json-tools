@@ -21,8 +21,6 @@ def dump(data: Union[Dict, Iterable], fp: IO):
     data :
         Iterable object to write.
     """
-    if isinstance(fp.read(0), bytes):
-        fp = codecs.getwriter('utf-8')(fp)
 
     if isinstance(data, dict):
         fp.write(jsonlib.dumps(data))
@@ -69,6 +67,6 @@ def load_from_file(file_name: str, *, file_mode: str = None):
 
 def dump_to_file(gen: Iterable, file_name: str, *, file_mode: str = None):
     if not file_mode:
-        file_mode = "bw"
+        file_mode = "w"
     with open(file_name, file_mode) as fp:
         return dump(gen, fp)
