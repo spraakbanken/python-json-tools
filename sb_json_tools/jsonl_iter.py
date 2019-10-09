@@ -4,12 +4,13 @@ from typing import Iterable
 from typing import Union
 
 import codecs
+import io
 
 from sb_json_tools import jsonlib
 
 
 def dump(data: Union[Dict, Iterable], fp: IO):
-    if isinstance(fp.read(0), bytes):
+    if isinstance(fp, io.BufferedIOBase):
         fp = codecs.getwriter('utf-8')(fp)
 
     if isinstance(data, dict):

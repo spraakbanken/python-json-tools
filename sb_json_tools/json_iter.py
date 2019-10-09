@@ -5,6 +5,7 @@ from typing import Iterable
 from typing import Union
 
 import codecs
+import io
 
 import ijson
 
@@ -21,6 +22,8 @@ def dump(data: Union[Dict, Iterable], fp: IO):
     data :
         Iterable object to write.
     """
+    if isinstance(fp, io.BufferedIOBase):
+        fp = codecs.getwriter('utf-8')(fp)
 
     if isinstance(data, dict):
         fp.write(jsonlib.dumps(data))
