@@ -9,12 +9,12 @@ from . import utils
 def load(
     fp: IO,
     *,
-    filetype=None
+    file_type=None
 ) -> Iterable:
     _iter = json_iter
-    if filetype == 'json':
+    if file_type == 'json':
         pass
-    elif filetype == 'jsonl':
+    elif file_type == 'jsonl':
         _iter = jsonl_iter
     else:
         if utils.is_jsonl(fp.name):
@@ -24,32 +24,33 @@ def load(
 
 
 def load_from_file(
-        filename: str,
+        file_name: str,
         *,
-        filetype=None
+        file_type: str = None,
+        file_mode: str = None
         ):
     _iter = json_iter
-    if filetype == 'json':
+    if file_type == 'json':
         pass
-    elif filetype == 'jsonl':
+    elif file_type == 'jsonl':
         _iter = jsonl_iter
     else:
-        if utils.is_jsonl(filename):
+        if utils.is_jsonl(file_name):
             _iter = jsonl_iter
 
-    yield from _iter.load_from_file(filename)
+    yield from _iter.load_from_file(file_name, file_mode=file_mode)
 
 
 def dump(
         in_iter_,
         fp: IO,
         *,
-        filetype=None
+        file_type: str = None
         ):
     _iter = json_iter
-    if filetype == 'json':
+    if file_type == 'json':
         pass
-    elif filetype == 'jsonl':
+    elif file_type == 'jsonl':
         _iter = jsonl_iter
     else:
         if utils.is_jsonl(fp.name):
@@ -60,30 +61,18 @@ def dump(
 
 def dump_to_file(
         in_iter_,
-        filename: str,
+        file_name: str,
         *,
-        filetype=None
-        ):
+        file_type=None,
+        file_mode: str = None
+):
     _iter = json_iter
-    if filetype == 'json':
+    if file_type == 'json':
         pass
-    elif filetype == 'jsonl':
+    elif file_type == 'jsonl':
         _iter = jsonl_iter
     else:
-        if utils.is_jsonl(filename):
+        if utils.is_jsonl(file_name):
             _iter = jsonl_iter
 
-    _iter.dump_to_file(in_iter_, filename)
-
-
-if __name__ == '__main__':
-    files = [
-        'tests/data/dict.json',
-        'tests/data/array.json',
-        'tests/data/array.jsonl',
-    ]
-
-    for f in files:
-        print('reading {f} ...'.format(f=f))
-        for i, o in enumerate(load_from_file(f)):
-            print('{i}: {o}'.format(i=i, o=o))
+    _iter.dump_to_file(in_iter_, file_name, file_mode=file_mode)

@@ -30,7 +30,7 @@ ${VENV_NAME}/venv.created:
 	@touch $@
 
 ${VENV_NAME}/dev.installed: setup.py setup.cfg tools/pip-requires
-	${VENV_ACTIVATE}; python -m pip install -e .[dev]
+	${VENV_ACTIVATE}; python -m pip install -Ue .[dev]
 	@touch $@
 
 install-dev: venv ${VENV_NAME}/dev.installed

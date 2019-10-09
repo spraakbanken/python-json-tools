@@ -1,4 +1,3 @@
-__version__ = '0.2.8'
 import sys
 
 import click
@@ -6,6 +5,9 @@ import click
 from sb_json_tools import jsonlib
 from sb_json_tools import jt_val
 from sb_json_tools import jt_iter
+
+
+__version__ = '0.4.0'
 
 
 @click.group()
@@ -26,10 +28,10 @@ def validate(infile, outfile, schema):
     jt_iter.dump(correct, outfile)
     if errors:
         # (out_root, out_ext) = os.path.splitext(outfile)
-        # errors_filename = os.path.join(out_root, ".errors", out_ext)
+        # errors_file_name = os.path.join(out_root, ".errors", out_ext)
         jt_iter.dump(errors, sys.stderr)
         # click.echo("ERRORs found!!!")
-        # click.echo("Errors are written to {0}".format(errors_filename))
+        # click.echo("Errors are written to {0}".format(errors_file_name))
         click.Context.exit(len(errors))
 
 
