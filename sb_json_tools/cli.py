@@ -42,5 +42,13 @@ def convert(src, dst):
     jt_iter.dump(jt_iter.load(src), dst)
 
 
+@cli.command()
+@click.argument("src", type=click.File("r"))
+def length(src):
+    for _len, _ in enumerate(jt_iter.load(src), 1):
+        pass
+    click.echo(_len)
+
+
 if __name__ == "__main__":
     cli()
