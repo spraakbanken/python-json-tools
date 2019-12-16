@@ -1,22 +1,23 @@
 language: python
 dist: xenial
 python:
-- "3.5"
-- "3.6"
-- "3.7"
-- "3.8-dev"
-- "nightly"
+  - "3.5"
+  - "3.6"
+  - "3.7"
+  - "3.8"
+  - "3.9-dev"
+  - "nightly"
 matrix:
   allow_failures:
-  - python: 3.8-dev
-  - python: nightly
+    - python: 3.9-dev
+    - python: nightly
 install:
-- pip install -e .[dev]
-- pip install codecov
+  - pip install -e .[dev]
+  - pip install codecov
 script:
-- pytest -v --cov=sb_json_tools/ --cov-report=term tests
+  - pytest -v --cov=sb_json_tools/ --cov-report=term tests
 after_success:
-- codecov
+  - codecov
 notifications:
   email:
     on_success: change
