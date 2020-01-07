@@ -4,7 +4,7 @@ import pytest
 
 from sb_json_tools import jt_iter
 
-from .utils import compare_iters
+from sb_json_tools.tests.utils import compare_iters
 
 
 @pytest.mark.parametrize("out", [io.StringIO, io.BytesIO])

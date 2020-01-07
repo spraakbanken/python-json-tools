@@ -4,7 +4,7 @@ import json
 import pytest
 
 from sb_json_tools import json_iter, jsonl_iter
-from .utils import compare_iters
+from sb_json_tools.tests.utils import compare_iters
 
 
 DATA = [
