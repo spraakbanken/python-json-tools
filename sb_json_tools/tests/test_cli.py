@@ -57,8 +57,8 @@ def test_cli_with_long_option_parameter(runner):
 
 @pytest.mark.xfail(reason='working on it')
 def test_cli_with_schema_and_valid_arg(runner):
-    schema = "tests/data/schema_default.json"
-    arg = "tests/valid_array.json"
+    schema = "sb_json_tools/tests/data/schema_default.json"
+    arg = "sb_json_tools/tests/valid_array.json"
     result = runner.invoke(cli.cli, [
         'validate',
         '--schema',

@@ -80,7 +80,7 @@ def test_dump_gen_memoryio(out, it, facit):
 @pytest.mark.parametrize(
     "it,file_name,facit",
     [
-        (json_iter, "tests/data/array.json", None),
+        (json_iter, "sb_json_tools/tests/data/array.json", None),
     ]
 )
 def test_load_file_name(it, file_name: str, facit, file_mode):
