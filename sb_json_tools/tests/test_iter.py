@@ -20,7 +20,8 @@ JSONL_FACIT = '{"a": 1}\n{"a": 2}\n'
 json_data = st.recursive(
     st.none()
     | st.booleans()
-    | st.floats(allow_nan=False, allow_infinity=False)
+    | st.integers()
+    #| st.floats(allow_nan=False, allow_infinity=False)
     | st.text(printable),
     lambda children: st.lists(children, 1).filter(lambda l: len(l) > 1 or l[0] is None)
     | st.dictionaries(
