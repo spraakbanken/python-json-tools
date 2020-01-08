@@ -23,7 +23,9 @@ json_data = st.recursive(
     | st.floats(allow_nan=False, allow_infinity=False)
     | st.text(printable),
     lambda children: st.lists(children, 1).filter(lambda l: len(l) > 1 or l[0] is None)
-    | st.dictionaries(st.text(printable), children, min_size=1),
+    | st.dictionaries(
+        st.text(printable).filter(lambda s: len(s) > 0), children, min_size=1
+    ),
 )
 
 
