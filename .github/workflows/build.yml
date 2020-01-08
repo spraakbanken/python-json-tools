@@ -25,4 +25,4 @@ jobs:
           pylint --rcfile=.pylintrc --exit-zero sb_json_tools
       - name: Test with pytest
         run: |
-          pytest --cov=sb_json_tools sb_json_tools/tests
+          pytest sb_json_tools/tests
