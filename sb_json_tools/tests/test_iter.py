@@ -8,8 +8,8 @@ from sb_json_tools.tests.utils import compare_iters
 
 
 DATA = [
-    {'a': 1},
-    {'a': 2},
+    {"a": 1},
+    {"a": 2},
 ]
 
 JSON_FACIT = '[\n{"a": 1},\n{"a": 2}\n]'
@@ -20,68 +20,47 @@ def gen_data():
     for i in DATA:
         yield i
 
+
 @pytest.mark.parametrize("out", [io.StringIO, io.BytesIO])
 @pytest.mark.parametrize(
-    "it,data,facit",
-    [
-        (json_iter, DATA[0], '{"a": 1}'),
-        (jsonl_iter, DATA[0], '{"a": 1}\n'),
-    ]
+    "it,data", [(json_iter, DATA[0]), (jsonl_iter, DATA[0]),],
 )
-def test_dump_dict_memoryio(out, it, data, facit):
+def test_dump_dict_memoryio(out, it, data):
     out = out()
-    if isinstance(out, io.BytesIO):
-        facit = facit.encode('utf-8')
     it.dump(data, out)
-    assert out.getvalue() == facit
 
     out.seek(0)
-    for i in it.load(out):
-        print("i = {i}".format(i=i))
-        assert i == data
+    for i, obj in enumerate(it.load(out)):
+        if i == 0:
+            assert obj == data
+        else:
+            pytest.fail()
+
+
+@pytest.mark.parametrize("out", [io.StringIO, io.BytesIO])
+@pytest.mark.parametrize("it,data", [(json_iter, DATA), (jsonl_iter, DATA),])
+def test_dump_array_memoryio(out, it, data):
+    out = out()
+    it.dump(data, out)
+
+    out.seek(0)
+    compare_iters(it.load(out), data)
 
 
 @pytest.mark.parametrize("out", [io.StringIO, io.BytesIO])
 @pytest.mark.parametrize(
-    "it,facit",
-    [
-        (json_iter, JSON_FACIT),
-        (jsonl_iter, JSONL_FACIT),
-    ]
+    "it, data_generator", [(json_iter, gen_data), (jsonl_iter, gen_data),]
 )
-def test_dump_array_memoryio(out, it, facit):
+def test_dump_gen_memoryio(out, it, data_generator):
     out = out()
-    if isinstance(out, io.BytesIO):
-        facit = facit.encode('utf-8')
-    it.dump(DATA, out)
-    assert facit == out.getvalue()
-
+    it.dump(data_generator(), out)
     out.seek(0)
-    compare_iters(it.load(out), DATA)
-
-
-@pytest.mark.parametrize("out", [io.StringIO, io.BytesIO])
-@pytest.mark.parametrize(
-    "it,facit",
-    [
-        (json_iter, JSON_FACIT),
-        (jsonl_iter, JSONL_FACIT),
-    ]
-)
-def test_dump_gen_memoryio(out, it, facit):
-    out = out()
-    if isinstance(out, io.BytesIO):
-        facit = facit.encode('utf-8')
-    it.dump(gen_data(), out)
-    assert facit == out.getvalue()
+    compare_iters(it.load(out), data_generator())
 
 
 @pytest.mark.parametrize("file_mode", ["rb", "r"])
 @pytest.mark.parametrize(
-    "it,file_name,facit",
-    [
-        (json_iter, "sb_json_tools/tests/data/array.json", None),
-    ]
+    "it,file_name,facit", [(json_iter, "sb_json_tools/tests/data/array.json", None),]
 )
 def test_load_file_name(it, file_name: str, facit, file_mode):
     if not facit:
