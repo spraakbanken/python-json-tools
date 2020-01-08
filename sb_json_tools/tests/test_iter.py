@@ -1,7 +1,9 @@
 import io
 import json
+from string import printable
 
 import pytest
+from hypothesis import given, strategies as st
 
 from sb_json_tools import json_iter, jsonl_iter
 from sb_json_tools.tests.utils import compare_iters
@@ -14,6 +16,15 @@ DATA = [
 
 JSON_FACIT = '[\n{"a": 1},\n{"a": 2}\n]'
 JSONL_FACIT = '{"a": 1}\n{"a": 2}\n'
+
+json_data = st.recursive(
+    st.none()
+    | st.booleans()
+    | st.floats(allow_nan=False, allow_infinity=False)
+    | st.text(printable),
+    lambda children: st.lists(children, 1).filter(lambda l: len(l) > 1 or l[0] is None)
+    | st.dictionaries(st.text(printable), children, min_size=1),
+)
 
 
 def gen_data():
@@ -38,13 +49,21 @@ def test_dump_dict_memoryio(out, it, data):
 
 
 @pytest.mark.parametrize("out", [io.StringIO, io.BytesIO])
-@pytest.mark.parametrize("it,data", [(json_iter, DATA), (jsonl_iter, DATA),])
+@pytest.mark.parametrize("it", [json_iter, jsonl_iter])
+@given(json_data)
 def test_dump_array_memoryio(out, it, data):
     out = out()
     it.dump(data, out)
 
     out.seek(0)
-    compare_iters(it.load(out), data)
+    if isinstance(data, list):
+        compare_iters(it.load(out), data)
+    else:
+        for i, obj in enumerate(it.load(out)):
+            if i == 0:
+                assert obj == data
+            else:
+                pytest.fail()
 
 
 @pytest.mark.parametrize("out", [io.StringIO, io.BytesIO])

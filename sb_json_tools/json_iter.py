@@ -23,7 +23,7 @@ def dump(data: Union[Dict, Iterable], fp: IO):
         Iterable object to write.
     """
     if isinstance(fp, io.BufferedIOBase):
-        fp = codecs.getwriter('utf-8')(fp)
+        fp = codecs.getwriter("utf-8")(fp)
 
     if isinstance(data, dict):
         fp.write(jsonlib.dumps(data))
@@ -35,7 +35,7 @@ def dump(data: Union[Dict, Iterable], fp: IO):
         fp.write(jsonlib.dumps(data))
         return
 
-    fp.write('[\n')
+    fp.write("[\n")
     try:
         obj = next(it)
         fp.write(jsonlib.dumps(obj))
@@ -43,13 +43,13 @@ def dump(data: Union[Dict, Iterable], fp: IO):
         pass
     else:
         for v in it:
-            fp.write(',\n')
+            fp.write(",\n")
             fp.write(jsonlib.dumps(v))
-    fp.write('\n]')
+    fp.write("\n]")
 
 
 def load(fp: IO) -> Iterable:
-    yield from ijson.items(fp, 'item')
+    yield from ijson.items(fp, "item")
 
 
 def load_eager(fp: IO):
