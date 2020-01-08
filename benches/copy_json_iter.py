@@ -15,7 +15,7 @@ def get_dict(filename):
 
 
 @profile
-def update_plain_json(filename, with_id=False):
+def copy_json_iter(filename, with_id=False):
     data = get_dict(filename)
 
     if with_id:
