@@ -25,26 +25,26 @@ def dump(data: Union[Dict, Iterable], fp: IO):
     if isinstance(fp, io.BufferedIOBase):
         fp = codecs.getwriter("utf-8")(fp)
 
-    if isinstance(data, dict):
-        fp.write(jsonlib.dumps(data))
+    if isinstance(data, (dict, str, int, float, bool)):
+        fp.write(jsonlib.dumps(data, **jsonlib.JSON_SETTINGS))
         return
 
     try:
         it = iter(data)
     except TypeError:
-        fp.write(jsonlib.dumps(data))
+        fp.write(jsonlib.dumps(data, **jsonlib.JSON_SETTINGS))
         return
 
     fp.write("[\n")
     try:
         obj = next(it)
-        fp.write(jsonlib.dumps(obj))
+        fp.write(jsonlib.dumps(obj, **jsonlib.JSON_SETTINGS))
     except StopIteration:
         pass
     else:
         for v in it:
             fp.write(",\n")
-            fp.write(jsonlib.dumps(v))
+            fp.write(jsonlib.dumps(v, **jsonlib.JSON_SETTINGS))
     fp.write("\n]")
 
 
@@ -53,7 +53,7 @@ def load(fp: IO) -> Iterable:
 
 
 def load_eager(fp: IO):
-    data = jsonlib.load(fp)
+    data = jsonlib.load(fp, **jsonlib.JSON_SETTINGS)
     if isinstance(data, list):
         for obj in data:
             yield obj
