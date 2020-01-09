@@ -1,7 +1,6 @@
 language: python
 dist: xenial
 python:
-  - "3.5"
   - "3.6"
   - "3.7"
   - "3.8"
@@ -32,4 +31,4 @@ deploy:
     tags: true
     branch: master
     repo: spraakbanken/python-json-tools
-    python: "3.5"
+    python: "3.6"
