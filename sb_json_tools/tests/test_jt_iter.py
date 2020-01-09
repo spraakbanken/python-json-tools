@@ -2,30 +2,34 @@ import io
 
 import pytest
 
-from sb_json_tools import jt_iter
+import hypothesis
+from hypothesis import given, strategies as st
 
-from sb_json_tools.tests.utils import compare_iters
+from sb_json_tools import jt_iter, jsonlib
+
+from sb_json_tools.tests.utils import (
+    compare_iters,
+    JSON_DATA,
+    convert_to_decimal_if_float,
+    reference_dict,
+)
 
 
 @pytest.mark.parametrize("out", [io.StringIO, io.BytesIO])
-@pytest.mark.parametrize("data,facit,file_type", [
-    (1, "1", "json"),
-    (1, "1\n", "jsonl"),
-    ([1, 2], "[\n1,\n2\n]", "json"),
-    ([1, 2], "1\n2\n", "jsonl"),
-])
-def test_dump_int_memoryio(out, data, facit, file_type):
+@pytest.mark.parametrize(
+    "file_type", ["json", "jsonl"],
+)
+@given(JSON_DATA)
+@hypothesis.settings(suppress_health_check=[hypothesis.HealthCheck.too_slow])
+def test_dump_and_load_memoryio(out, file_type, data):
     out = out()
-    if isinstance(out, io.BytesIO):
-        facit = facit.encode('utf-8')
     jt_iter.dump(data, out, file_type=file_type)
-    assert out.getvalue() == facit
+    facit = reference_dict(data)
 
     out.seek(0)  # read it from the beginning
-    out_iter = jt_iter.load(out, file_type=file_type)
     if isinstance(data, list):
-        compare_iters(out_iter, data)
+        out_iter = jt_iter.load(out, file_type=file_type)
+        compare_iters(out_iter, facit)
     else:
         for i in jt_iter.load(out, file_type=file_type):
-            print("i = {i}".format(i=i))
-            assert i == data
+            assert i == facit

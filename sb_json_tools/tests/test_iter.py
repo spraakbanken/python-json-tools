@@ -3,10 +3,16 @@ import json
 from string import printable
 
 import pytest
-from hypothesis import given, strategies as st
+import hypothesis
+from hypothesis import given, settings, strategies as st
 
 from sb_json_tools import json_iter, jsonl_iter
-from sb_json_tools.tests.utils import compare_iters
+from sb_json_tools.tests.utils import (
+    compare_iters,
+    JSON_DATA,
+    convert_to_decimal_if_float,
+    reference_dict,
+)
 
 
 DATA = [
@@ -16,17 +22,6 @@ DATA = [
 
 JSON_FACIT = '[\n{"a": 1},\n{"a": 2}\n]'
 JSONL_FACIT = '{"a": 1}\n{"a": 2}\n'
-
-json_data = st.recursive(
-    st.none()
-    | st.booleans()
-    | st.floats(allow_nan=False, allow_infinity=False)
-    | st.text(printable),
-    lambda children: st.lists(children, 1).filter(lambda l: len(l) > 1 or l[0] is None)
-    | st.dictionaries(
-        st.text(printable).filter(lambda s: len(s) > 0), children, min_size=1
-    ),
-)
 
 
 def gen_data():
@@ -52,18 +47,45 @@ def test_dump_dict_memoryio(out, it, data):
 
 @pytest.mark.parametrize("out", [io.StringIO, io.BytesIO])
 @pytest.mark.parametrize("it", [json_iter, jsonl_iter])
-@given(json_data)
+@given(st.just("00"))
+def test_dump_strings_with_zeros_memoryio(out, it, data):
+    out = out()
+    it.dump(data, out)
+    facit = '"00"'
+    if isinstance(out, io.BytesIO):
+        facit = facit.encode("utf-8")
+    assert out.getvalue() == facit
+
+    out.seek(0)
+    for i, obj in enumerate(it.load(out)):
+        if i == 0:
+            assert obj == data
+        else:
+            pytest.fail()
+
+    # out.seek(0)
+    # if not isinstance(data, list):
+    #     data = [data]
+    # compare_iters(it.load(out), data)
+
+
+@pytest.mark.parametrize("out", [io.StringIO, io.BytesIO])
+@pytest.mark.parametrize("it", [json_iter, jsonl_iter])
+@given(JSON_DATA)
+@hypothesis.settings(suppress_health_check=[hypothesis.HealthCheck.too_slow])
 def test_dump_array_memoryio(out, it, data):
     out = out()
     it.dump(data, out)
 
+    facit = reference_dict(data)
+
     out.seek(0)
     if isinstance(data, list):
-        compare_iters(it.load(out), data)
+        compare_iters(it.load(out), facit)
     else:
         for i, obj in enumerate(it.load(out)):
             if i == 0:
-                assert obj == data
+                assert obj == facit
             else:
                 pytest.fail()
 

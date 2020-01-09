@@ -1,3 +1,4 @@
 fastjsonschema
 click
 ijson
+simplejson
