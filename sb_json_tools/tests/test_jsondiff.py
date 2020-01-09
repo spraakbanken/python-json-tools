@@ -1,6 +1,13 @@
+from string import printable
+
 import pytest
 
+from hypothesis import given, strategies as st
+
 from sb_json_tools import jsondiff as diff
+
+
+
 
 objs = [
     {'a': 1},  # 0
@@ -65,3 +72,11 @@ def test_compare(i1, i2, facit):
 
     for a in r:
         assert a in facit
+
+
+@given(st.dictionaries(st.text(printable), st.none() | st.floats(allow_nan=False) | st.integers() | st.text(printable)))
+def test_diff_equal(data):
+    r = diff.compare(data, data)
+
+    assert len(r) == 0
+
