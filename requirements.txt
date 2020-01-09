@@ -2,3 +2,4 @@ fastjsonschema
 click
 ijson
 simplejson
+attrs>=19.2.0
