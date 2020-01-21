@@ -37,8 +37,10 @@ jobs:
           python-version: 3.5
       - name: Build distribution
         run: |
-          pip install wheel
+          pip install --upgrade setuptools twine wheel pbr
           python setup.py sdist bdist_wheel
+      - name: Check distributions
+        run: twine check dist/*
       - name: Publish package to TestPyPI
         uses: pypa/gh-action-pypi-publish@master
         with:
