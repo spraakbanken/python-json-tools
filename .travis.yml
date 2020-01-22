@@ -22,14 +22,3 @@ notifications:
   email:
     on_success: change
     on_failure: always
-deploy:
-  provider: pypi
-  user: kod-kristoff-deploy
-  distributions: "sdist bdist_wheel"
-  password:
-    secure: QTAJ7augXGP4CoE87GR2jxmipLEwpFqemQznli5vBqTpi70LP7I34q2FywMY8236AYF51tnYTKrdgULNtGxxQRhDIg8ZOJ++5r7y9C0xULZBzVQT0XbOW5uWfN85gxKvC7zh2usijRJaY2btQ5EmcblCXUacSPTtTgrJK3YRwdhsyS1+sN+PUgTkvsFzEuO+KeqGCX7Tg/BpeLzXzSNuYGG4SkkKmNL7HHyV7PjLKZEWCljKZ3syktymRf2fCB71hiJ/IOwXRTopPpS9m0DiOZINCRXhjzi/8QJ+zRIrCDfVqYlk8+rxeVRJp5wTkJmN5IM8WiKOKvSOIHerez10OVvfIhxDI/9PTn9XUjS/z7a3lTKyRVVjhPLkchJQ4M7aEOM9gMoAXYjOhfrfiYxAL3M4Wht3hMfdpyDwMy1beyQIOymmFezBiHZhyGNDmvCQUZ4f9oE4locwulK0z4xX2TFwIy7gp/lJvDUMca6yWrkCbA8vLWJLw5X0PCb00KQRUhx6XXDbB83VqBFlMpD0jN4U53DBqXZ8mQnpAgUq2LfcwkLr3U7O1U928PRizUdZ05LjJ9T5dSme/LT4Gbnrgz8noMteYjsDibuLckJfP9Rf2hB+mgGYDcIM+NI1xv32S40MYlNrI+dozVJw6JfbJftW6nL/AmXZmugaLY92i54=
-  on:
-    tags: true
-    branch: master
-    repo: spraakbanken/python-json-tools
-    python: "3.5"
