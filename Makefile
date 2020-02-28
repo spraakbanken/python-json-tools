@@ -4,23 +4,32 @@
 
 help:
 	@echo "usage:"
+PLATFORM := ${shell uname -o}
+INVENV_PATH = ${shell which invenv}
 
+${info Platform: ${PLATFORM}}
+${info invenv: ${INVENV_PATH}}
 
 ifeq (${VIRTUAL_ENV},)
   VENV_NAME = .venv
-  VENV_BIN = ${VENV_NAME}/bin
-  ${info Using ${VENV_NAME}}
 else
   VENV_NAME = ${VIRTUAL_ENV}
-  VENV_BIN = ${VENV_NAME}/bin
   ${info Using ${VENV_NAME}}
 endif
-ifeq (${VIRTUAL_ENV},)
-  VENV_ACTIVATE = . ${VENV_BIN}/activate
+${info Using ${VENV_NAME}}
+VENV_BIN = ${VENV_NAME}/bin
+
+ifeq (${INVENV_PATH},)
+  INVENV = export VIRTUAL_ENV="${VENV_NAME}"; export PATH="${VENV_BIN}:${PATH}"; unset PYTHON_HOME;
 else
-  VENV_ACTIVATE = true
+  INVENV = invenv -C ${VENV_NAME}
 endif
-PYTHON = ${VENV_BIN}/python
+
+ifeq (${PLATFORM}, Android)
+  FLAKE8_FLAGS = --jobs=1
+else
+  FLAKE8_FLAGS = --jobs=auto
+endif
 
 
 venv: ${VENV_NAME}/venv.created
@@ -30,25 +39,31 @@ ${VENV_NAME}/venv.created:
 	@touch $@
 
 ${VENV_NAME}/dev.installed: setup.py setup.cfg requirements.txt
-	${VENV_ACTIVATE}; python -m pip install -Ue .[dev]
+	${INVENV} pip install -Ue .[dev]
 	@touch $@
 
 install-dev: venv ${VENV_NAME}/dev.installed
 
 test: install-dev
-	${VENV_ACTIVATE}; pytest
+	${INVENV} pytest
+
+test-w-coverage: install-dev
+	${INVENV} pytest --cov=sb_json_tools --cov-report=term-missing --cov-config=setup.cfg
 
 lint: install-dev
-	${VENV_ACTIVATE}; pylint --rcfile=.pylintrc sb_json_tools
+	${INVENV} pylint --rcfile=.pylintrc sb_json_tools
+
+lint-no-fail: install-dev
+	${INVENV} pylint --rcfile=.pylintrc --exit-zero sb_json_tools
 
 bumpversion-patch: install-dev
-	${VENV_ACTIVATE}; bump2version patch
+	${INVENV} bump2version patch
 
 bumpversion-minor: install-dev
-	${VENV_ACTIVATE}; bump2version minor
+	${INVENV} bump2version minor
 
 bumpversion-major: install-dev
-	${VENV_ACTIVATE}; bump2version major
+	${INVENV} bump2version major
 
 release-patch: bumpversion-patch
 release-minor: bumpversion-minor
