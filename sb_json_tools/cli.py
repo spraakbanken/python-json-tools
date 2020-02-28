@@ -7,7 +7,7 @@ from sb_json_tools import jt_val
 from sb_json_tools import jt_iter
 
 
-__version__ = "__version__ = '0.5.1'"
+__version__ = "__version__ = '0.5.2'"
 
 
 @click.group()
