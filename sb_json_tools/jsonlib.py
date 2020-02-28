@@ -4,10 +4,15 @@ Utility library to load the underlying json library.
 Imports `ujson` if it is present, otherwise it imports `json` from
 the standard library.
 """
-try:
-    from ujson import dump, dumps, load, loads  # pylint: disable=unused-import
-except ImportError:
-    from json import dump, dumps, load, loads  # noqa: F401
+from simplejson import dump, dumps, load, loads
+
+# try:
+#     from ujson import dump, dumps, load, loads  # pylint: disable=unused-import
+# except ImportError:
+#     from json import dump, dumps, load, loads  # noqa: F401
+
+
+JSON_SETTINGS = {"use_decimal": True}
 
 
 def load_from_file(file_name: str):
@@ -17,7 +22,7 @@ def load_from_file(file_name: str):
     :param file_name: name of the file to load from.
     :return: the loaded JSON file.
     """
-    with open(file_name, 'r') as fp:
+    with open(file_name, "r") as fp:
         return load(fp)
 
 
@@ -29,5 +34,5 @@ def dump_to_file(obj, file_name: str):
     :param file_name: name of the file to dump to.
     :return: anything returned from the backend.
     """
-    with open(file_name, 'w') as fp:
+    with open(file_name, "w") as fp:
         return dump(obj, fp)
