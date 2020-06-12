@@ -1,5 +1,5 @@
 """ Diff two JSON-files (or dict's). """
-from sb_json_tools import jsonlib
+from json_streams import jsonlib
 
 # Borrow from http://djangosnippets.org/snippets/2247/
 # and inspired by https://github.com/jclulow/jsondiff
