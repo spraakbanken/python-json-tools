@@ -8,7 +8,7 @@ from string import printable
 
 from hypothesis import strategies as st
 
-from sb_json_tools import jsonlib
+from json_streams import jsonlib
 
 JSON_DATA = st.recursive(
     st.none()

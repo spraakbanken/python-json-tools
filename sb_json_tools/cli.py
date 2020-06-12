@@ -23,7 +23,6 @@ def validate(
     ),
 ):
     """Validates a json-file with a schema (json-schema.org)."""
-    # click.echo("Validating {0} with the schema in {1}.".format(infile, schema))
     schema_json = json.load(schema)
     data = json_streams.load(infile)
     correct, errors = jt_val.validate(schema_json, data)
