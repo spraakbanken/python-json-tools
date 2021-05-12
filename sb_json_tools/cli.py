@@ -8,7 +8,7 @@ from json_streams import jsonlib
 from sb_json_tools import jt_val
 
 
-__version__ = "__version__ = '0.5.2'"
+__version__ = "__version__ = '0.6.0'"
 
 
 cli = typer.Typer()
