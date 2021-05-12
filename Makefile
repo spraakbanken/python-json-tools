@@ -56,7 +56,7 @@ lint: install-dev
 lint-no-fail: install-dev
 	${INVENV} pylint --rcfile=.pylintrc --exit-zero sb_json_tools
 
-bumpversion-patch: install-dev
+bumpversion: install-dev
 	${INVENV} bump2version patch
 
 bumpversion-minor: install-dev
@@ -65,6 +65,6 @@ bumpversion-minor: install-dev
 bumpversion-major: install-dev
 	${INVENV} bump2version major
 
-release-patch: bumpversion-patch
+release: bumpversion
 release-minor: bumpversion-minor
 release-major: bumpversion-major
