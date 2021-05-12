@@ -15,15 +15,6 @@ from . import exceptions
 __version__ = "0.1.0"
 
 
-class Result(object):
-    def __init__(self, ok=None, error=None, error_msg=None):
-        if ok is not None and error is not None:
-            raise ValueError()
-        self.ok = ok
-        self.error = error
-        self.error_msg = error_msg
-
-
 def ok(item: Dict) -> Tuple[Dict, None]:
     return (item, None)
 
