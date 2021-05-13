@@ -36,6 +36,7 @@ venv: ${VENV_NAME}/venv.created
 
 ${VENV_NAME}/venv.created:
 	test -d ${VENV_NAME} || python -m venv ${VENV_NAME}
+	${INVENV} pip install -U pip wheel
 	@touch $@
 
 ${VENV_NAME}/dev.installed: setup.py setup.cfg requirements.txt
