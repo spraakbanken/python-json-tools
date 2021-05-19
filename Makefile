@@ -1,4 +1,4 @@
-.PHONY: venv help test bumpversion-minor bumpversion-major bumpversion-patch
+.PHONY: venv help test test-w-coverage bumpversion-minor bumpversion-major bumpversion-patch check-pylint check-mypy check-pylint-refactorings
 
 .default: help
 
@@ -56,6 +56,15 @@ lint: install-dev
 
 lint-no-fail: install-dev
 	${INVENV} pylint --rcfile=.pylintrc --exit-zero sb_json_tools
+
+check-pylint: install-dev
+	${INVENV} pylint --rcfile=.pylintrc sb_json_tools
+
+check-mypy: install-dev
+	${INVENV} mypy sb_json_tools
+
+check-pylint-refactorings: install-dev
+	${INVENV} pylint --disable=C,W,E --enable=R sb_json_tools
 
 bumpversion: install-dev
 	${INVENV} bump2version patch
