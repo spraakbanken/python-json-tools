@@ -1,6 +1,6 @@
 """Module to validate json object according to a json-schema.org schema."""
 
-import fastjsonschema
+import fastjsonschema  # type: ignore
 
 from typing import Dict, Optional
 from typing import Generator
@@ -25,7 +25,7 @@ def error(item: Dict, msg: str) -> Tuple[None, Dict]:
 
 def streaming_validate(
     schema: Dict, data: Union[Dict, Iterable[Dict]], *, raise_on_error: bool = False
-) -> Generator[Tuple[Optional[Dict], Optional[Dict]], None, None]:
+) -> Generator[Union[Tuple[Dict, None], Tuple[None, Dict]], None, None]:
     try:
         validator = fastjsonschema.compile(schema)
     except fastjsonschema.JsonSchemaDefinitionException as e:
@@ -56,14 +56,14 @@ def streaming_validate(
 def validate(
     schema: Dict, data: Union[Dict, Iterable[Dict]], *, raise_on_error: bool = False
 ) -> Tuple[List[Dict], List[Dict]]:
-    errors = []
-    correct = []
+    errors: List[Dict] = []
+    correct: List[Dict] = []
 
-    for ok, error in streaming_validate(schema, data, raise_on_error=raise_on_error):
-        if ok:
-            correct.append(ok)
-        else:
-            errors.append(error)
+    for ok_, error_ in streaming_validate(schema, data, raise_on_error=raise_on_error):
+        if ok_:
+            correct.append(ok_)
+        elif error_:
+            errors.append(error_)
     return correct, errors
 
 
@@ -74,8 +74,8 @@ def processing_validate(
     on_ok: Generator[None, Dict, None],
     on_error: Generator[None, Dict, None]
 ) -> None:
-    for ok, error in streaming_validate(schema, data):
-        if ok:
-            on_ok.send(ok)
-        else:
-            on_error.send(error)
+    for ok_, error_ in streaming_validate(schema, data):
+        if ok_:
+            on_ok.send(ok_)
+        elif error_:
+            on_error.send(error_)

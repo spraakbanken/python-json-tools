@@ -11,7 +11,7 @@ PATH = "PATH"
 VALUE = "VALUE"
 
 
-class Diff(object):
+class Diff:
     def __init__(self, first, second, with_values=False):
         self.difference = []
         self.seen = []
