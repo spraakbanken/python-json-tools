@@ -156,6 +156,7 @@ tests/requirements-testing.lock: pyproject.toml pdm.lock
 .PHONY: update-changelog
 update-changelog: CHANGELOG.md
 
+.PHONY: CHANGELOG.md
 CHANGELOG.md:
 	git cliff --unreleased --prepend $@
 
