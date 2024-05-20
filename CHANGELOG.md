@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [unreleased]
+
+### Miscellaneous Tasks
+
+- Fix bump-my-version
+
 ## [0.10.0] - 2024-05-20
 
 ### Miscellaneous Tasks

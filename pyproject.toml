@@ -1,6 +1,6 @@
 [project]
 name = "sb-json-tools"
-version = "0.9.1"
+version = "0.10.0"
 readme = "README.md"
 authors = [
     { name = "Språkbanken at the University of Gothenburg", email = "sb-info@svenska.gu.se" },
@@ -42,9 +42,7 @@ Homepage = "https://github.com/spraakbanken/python-json-tools"
 jt = "sb_json_tools.cli:cli"
 
 [project.optional-dependencies]
-release = [
-    "bump-my-version>=0.21.1",
-]
+release = ["bump-my-version>=0.21.1"]
 [build-system]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
