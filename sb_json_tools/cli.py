@@ -7,7 +7,7 @@ import json_arrays
 from sb_json_tools import jt_val
 
 
-__version__ = "0.10.0"
+__version__ = "0.10.1"
 
 
 cli = typer.Typer()
