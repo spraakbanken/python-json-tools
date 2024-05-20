@@ -16,10 +16,33 @@ __version__ = "0.1.0"
 
 
 def ok(item: Dict) -> Tuple[Dict, None]:
+    """Create a valid item.
+
+    >>> ok({'a':'b'})
+    ({'a': 'b'}, None)
+
+    Args:
+        item (Dict): The valid item
+
+    Returns:
+        Tuple[Dict, None]: a tuple (item, None)
+    """
     return (item, None)
 
 
 def error(item: Dict, msg: str) -> Tuple[None, Dict]:
+    """Create an error.
+
+    >>> error({'a':'b'}, 'msg')
+    (None, {'failing': {'a': 'b'}, 'message': 'msg'})
+
+    Args:
+        item (Dict): the failing item
+        msg (str): error message
+
+    Returns:
+        Tuple[None, Dict]: a tuple of (None, ErrorDict)
+    """
     return (None, {"failing": item, "message": msg})
 
 
