@@ -1,5 +1,6 @@
-""" Diff two JSON-files (or dict's). """
-from json_streams import jsonlib
+"""Diff two JSON-files (or dict's)."""
+
+from json_arrays import jsonlib
 
 # Borrow from http://djangosnippets.org/snippets/2247/
 # and inspired by https://github.com/jclulow/jsondiff
@@ -52,7 +53,7 @@ class Diff:
 
         # if object is list, loop over it and check.
         elif isinstance(first, list):
-            for (index, item) in enumerate(first):
+            for index, item in enumerate(first):
                 new_path = "%s[%s]" % (path, index)
                 # try to get the same index from second
                 sec = None

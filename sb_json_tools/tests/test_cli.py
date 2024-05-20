@@ -21,7 +21,7 @@ def runner():
 
 
 def test_cli(runner):
-    result = runner.invoke(cli.cli)
+    result = runner.invoke(cli.cli, ["--help"])
     assert result.exit_code == 0
     assert not result.exception
     # assert result.output.strip() == 'Hello, world.'
@@ -60,7 +60,7 @@ def test_cli_with_schema_and_valid_arg(runner):
     schema = "sb_json_tools/tests/data/schema_default.json"
     arg = "sb_json_tools/tests/data/valid_array.json"
     # with open(schema, "rb") as schema, open(arg, "rb") as arg:
-    outfile = "sb_json_tools/tests/data/gen_validated.json"
+    outfile = "sb_json_tools/tests/data/gen/validated.json"
     result = runner.invoke(cli.cli, ["validate", "--schema", schema, arg, outfile])
     print("result = {result}".format(result=repr(result)))
     assert result.exit_code == 0

@@ -1,4 +1,5 @@
 """Common test functions."""
+
 import decimal
 import itertools
 import math
@@ -8,7 +9,7 @@ from string import printable
 
 from hypothesis import strategies as st
 
-from json_streams import jsonlib
+from json_arrays import jsonlib
 
 JSON_DATA = st.recursive(
     st.none()
