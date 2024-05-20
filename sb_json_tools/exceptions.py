@@ -1,4 +1,5 @@
-""" Exceptions for sb_json_tools. """
+"""Exceptions for sb_json_tools."""
+
 
 class JsonToolsException(Exception):
     """

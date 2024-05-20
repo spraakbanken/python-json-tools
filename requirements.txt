@@ -1,6 +1,0 @@
-fastjsonschema
-typer
-ijson
-simplejson
-attrs>=19.2.0
-json-streams>=0.7

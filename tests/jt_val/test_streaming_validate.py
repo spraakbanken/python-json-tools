@@ -3,31 +3,27 @@ from sb_json_tools import jt_val as jv
 
 schema = {
     "type": "object",
-    "properties": {
-        "valid": {
-            "type": "integer"
-        }
-    },
-    "required": ["valid"]
+    "properties": {"valid": {"type": "integer"}},
+    "required": ["valid"],
 }
 
 
 def gen_valid_data(n):
     for i in range(n):
-        yield {'valid': i}
+        yield {"valid": i}
 
 
 def gen_invalid_data(n):
     for i in range(n):
-        yield {'invalid': i}
+        yield {"invalid": i}
 
 
 def gen_mixed_data(n):
     for i in range(n):
         if i % 2 == 1:
-            yield {'valid': i}
+            yield {"valid": i}
         else:
-            yield {'invalid': i}
+            yield {"invalid": i}
 
 
 def test_valid_data():
@@ -36,7 +32,7 @@ def test_valid_data():
 
     for i, (ok, error) in enumerate(stream):
         assert ok
-        assert ok['valid'] == i
+        assert ok["valid"] == i
         assert not error
 
 

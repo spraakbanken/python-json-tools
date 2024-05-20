@@ -1,80 +1,169 @@
-.PHONY: venv help test test-w-coverage bumpversion-minor bumpversion-major bumpversion-patch check-pylint check-mypy check-pylint-refactorings
 
+# use this Makefile as base in your project by running
+# git remote add make https://github.com/spraakbanken/python-pdm-make-conf
+# git fetch make
+# git merge --allow-unrelated-histories make/main
+#
+# To later update this makefile:
+# git fetch make
+# git merge make/main
+#
 .default: help
 
+.PHONY: help
 help:
 	@echo "usage:"
-PLATFORM := ${shell uname -o}
-INVENV_PATH = ${shell which invenv}
+	@echo "dev | install-dev"
+	@echo "   setup development environment"
+	@echo "install"
+	@echo "   setup production environment"
+	@echo ""
+	@echo "info"
+	@echo "   print info about the system and project"
+	@echo ""
+	@echo "test"
+	@echo "   run all tests"
+	@echo ""
+	@echo "test-w-coverage [cov=] [cov_report=]"
+	@echo "   run all tests with coverage collection. (Default: cov_report='term-missing', cov='--cov=${PROJECT_SRC}')"
+	@echo ""
+	@echo "lint"
+	@echo "   lint the code"
+	@echo ""
+	@echo "lint-fix"
+	@echo "   lint the code and try to fix it"
+	@echo ""
+	@echo "type-check"
+	@echo "   check types"
+	@echo ""
+	@echo "fmt"
+	@echo "   format the code"
+	@echo ""
+	@echo "check-fmt"
+	@echo "   check that the code is formatted"
+	@echo ""
+	@echo "bumpversion [part=]"
+	@echo "   bumps the given part of the version of the project. (Default: part='patch')"
+	@echo ""
+	@echo "bumpversion-show"
+	@echo "   shows the bump path that is possible"
+	@echo ""
+	@echo "publish [branch=]"
+	@echo "   pushes the given branch including tags to origin, for CI to publish based on tags. (Default: branch='main')"
+	@echo "   Typically used after 'make bumpversion'"
+	@echo ""
+	@echo "prepare-release"
+	@echo "   run tasks to prepare a release"
+	@echo ""
 
-${info Platform: ${PLATFORM}}
-${info invenv: ${INVENV_PATH}}
+PLATFORM := `uname -o`
+REPO := "python-json-tools"
+PROJECT_SRC := "sb_json_tools"
 
 ifeq (${VIRTUAL_ENV},)
   VENV_NAME = .venv
+  INVENV = pdm run
 else
   VENV_NAME = ${VIRTUAL_ENV}
-  ${info Using ${VENV_NAME}}
-endif
-${info Using ${VENV_NAME}}
-VENV_BIN = ${VENV_NAME}/bin
-
-ifeq (${INVENV_PATH},)
-  INVENV = export VIRTUAL_ENV="${VENV_NAME}"; export PATH="${VENV_BIN}:${PATH}"; unset PYTHON_HOME;
-else
-  INVENV = invenv -C ${VENV_NAME}
+  INVENV =
 endif
 
-ifeq (${PLATFORM}, Android)
-  FLAKE8_FLAGS = --jobs=1
-else
-  FLAKE8_FLAGS = --jobs=auto
-endif
+default_cov := "--cov=${PROJECT_SRC}"
+cov_report := "term-missing"
+cov := ${default_cov}
+
+all_tests := tests
+tests := tests
+
+info:
+	@echo "Platform: ${PLATFORM}"
+	@echo "INVENV: '${INVENV}'"
+
+dev: install-dev
+
+# setup development environment
+install-dev:
+	pdm install --dev
+
+# setup production environment
+install:
+	pdm sync --prod
+
+lock: pdm.lock
+
+pdm.lock: pyproject.toml
+	pdm lock
+
+.PHONY: test
+test:
+	${INVENV} pytest -vv ${tests}
+
+.PHONY: test-w-coverage
+# run all tests with coverage collection
+test-w-coverage:
+	${INVENV} pytest -vv ${cov}  --cov-report=${cov_report} ${all_tests}
+
+.PHONY: doc-tests
+doc-tests:
+	${INVENV} pytest ${cov} --cov-report=${cov_report} --doctest-modules ${PROJECT_SRC}
+
+.PHONY: type-check
+# check types
+type-check:
+	${INVENV} mypy ${PROJECT_SRC} ${tests}
+
+.PHONY: lint
+# lint the code
+lint:
+	${INVENV} ruff check ${PROJECT_SRC} ${tests}
+
+.PHONY: lint-fix
+# lint the code (and fix if possible)
+lint-fix:
+	${INVENV} ruff check --fix ${PROJECT_SRC} ${tests}
+
+part := "patch"
+bumpversion:
+	${INVENV} bump-my-version bump ${part}
+
+bumpversion-show:
+	${INVENV} bump-my-version show-bump
+
+# run formatter(s)
+fmt:
+	${INVENV} ruff format ${PROJECT_SRC} ${tests}
+
+.PHONY: check-fmt
+# check formatting
+check-fmt:
+	${INVENV} ruff format --check ${PROJECT_SRC} ${tests}
+
+build:
+	pdm build
+
+branch := "main"
+publish:
+	git push -u origin ${branch} --tags
 
 
-venv: ${VENV_NAME}/venv.created
+.PHONY: prepare-release
+prepare-release: update-changelog tests/requirements-testing.lock
 
-${VENV_NAME}/venv.created:
-	test -d ${VENV_NAME} || python -m venv ${VENV_NAME}
-	${INVENV} pip install -U pip wheel
-	@touch $@
+# we use lock extension so that dependabot doesn't pick up changes in this file
+tests/requirements-testing.lock: pyproject.toml pdm.lock
+	pdm export --dev --format requirements --output $@
 
-${VENV_NAME}/dev.installed: setup.py setup.cfg requirements.txt
-	${INVENV} pip install -Ue .[dev]
-	@touch $@
+.PHONY: update-changelog
+update-changelog: CHANGELOG.md
 
-install-dev: venv ${VENV_NAME}/dev.installed
+.PHONY: CHANGELOG.md
+CHANGELOG.md:
+	git cliff --unreleased --prepend $@
 
-test: install-dev
-	${INVENV} pytest
+# update snapshots for `syrupy`
+.PHONY: snapshot-update
+snapshot-update:
+	${INVENV} pytest --snapshot-update
 
-test-w-coverage: install-dev
-	${INVENV} pytest --cov=sb_json_tools --cov-report=term-missing --cov-config=setup.cfg
-
-lint: install-dev
-	${INVENV} pylint --rcfile=.pylintrc sb_json_tools
-
-lint-no-fail: install-dev
-	${INVENV} pylint --rcfile=.pylintrc --exit-zero sb_json_tools
-
-check-pylint: install-dev
-	${INVENV} pylint --rcfile=.pylintrc sb_json_tools
-
-check-mypy: install-dev
-	${INVENV} mypy sb_json_tools
-
-check-pylint-refactorings: install-dev
-	${INVENV} pylint --disable=C,W,E --enable=R sb_json_tools
-
-bumpversion: install-dev
-	${INVENV} bump2version patch
-
-bumpversion-minor: install-dev
-	${INVENV} bump2version minor
-
-bumpversion-major: install-dev
-	${INVENV} bump2version major
-
-release: bumpversion
-release-minor: bumpversion-minor
-release-major: bumpversion-major
+install-dev-release: install-dev
+	pdm install --with release --with dev

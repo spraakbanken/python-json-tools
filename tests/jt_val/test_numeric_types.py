@@ -3,28 +3,15 @@ from sb_json_tools import jt_val as jv
 
 schema = {
     "type": "object",
-    "properties": {
-        "int": {
-            "type": "integer"
-        },
-        "num": {
-            "type": "number"
-        }
-    },
-    "required": ["int", "num"]
+    "properties": {"int": {"type": "integer"}, "num": {"type": "number"}},
+    "required": ["int", "num"],
 }
 
 
-valid_data = [
-    {"int": 1, "num": 3.4},
-    {"int": 2.0, "num": 3.4},
-    {"int": 2, "num": 4}
-]
+valid_data = [{"int": 1, "num": 3.4}, {"int": 2.0, "num": 3.4}, {"int": 2, "num": 4}]
 
 
-invalid_data = [
-    {"int": 2.5, "num": 5.6}
-]
+invalid_data = [{"int": 2.5, "num": 5.6}]
 
 
 def test_valid_data():

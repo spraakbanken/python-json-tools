@@ -1,5 +1,5 @@
-"""Util functions.
-"""
+"""Util functions."""
+
 import os
 
 

@@ -1,4 +1,5 @@
 """Common test functions."""
+
 import decimal
 import itertools
 import math
@@ -8,7 +9,7 @@ from string import printable
 
 from hypothesis import strategies as st
 
-from json_streams import jsonlib
+from json_arrays import jsonlib
 
 JSON_DATA = st.recursive(
     st.none()
@@ -16,7 +17,9 @@ JSON_DATA = st.recursive(
     | st.floats(allow_nan=False, allow_infinity=False)
     | st.integers()
     | st.text(printable),
-    lambda children: st.lists(children, 1).filter(lambda l: len(l) > 1 or l[0] is None)
+    lambda children: st.lists(children, min_size=1).filter(
+        lambda l: len(l) > 1 or l[0] is None  # noqa: E741
+    )
     | st.dictionaries(
         st.text(printable).filter(lambda s: len(s) > 0), children, min_size=1
     ),
