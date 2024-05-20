@@ -46,3 +46,11 @@ requires = ["pdm-backend"]
 build-backend = "pdm.backend"
 
 [tool.pdm]
+[tool.pdm.dev-dependencies]
+dev = [
+    "pytest>=8.2.1",
+    "pytest-cov>=5.0.0",
+    "ruff>=0.4.4",
+    "bump-my-version>=0.21.1",
+    "mypy>=1.10.0",
+]
