@@ -1,19 +1,28 @@
-# python-json-tools
+# sb-json-tools
 
-[![Build Status](https://travis-ci.org/spraakbanken/python-json-tools.svg?branch=master)](https://travis-ci.org/spraakbanken/python-json-tools)
-[![codecov](https://codecov.io/gh/spraakbanken/python-json-tools/branch/master/graph/badge.svg)](https://codecov.io/gh/spraakbanken/python-json-tools)
-[![Build Status](https://github.com/spraakbanken/python-json-tools/workflows/Build/badge.svg)](https://github.com/spraakbanken/python-json-tools/actions)
-[![PyPI status](https://badge.fury.io/py/sb-json-tools.svg)](https://pypi.org/project/sb-json-tools/)
+[![PyPI version](https://badge.fury.io/py/sb-json-tools.svg)](https://pypi.org/project/sb-json-tools/)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/sb-json-tools)
+[![PyPI - Downloads](https://img.shields.io/pypi/dm/sb-json-tools)](https://pypi.org/project/sb-json-tools/)
+
+[![Maturity badge - level 3](https://img.shields.io/badge/Maturity-Level%203%20--%20Stable-green.svg)](https://github.com/spraakbanken/getting-started/blob/main/scorecard.md)
+[![Stage](https://img.shields.io/pypi/status/sb-json-tools)](https://pypi.org/project/sb-json-tools/)
+
+[![Code Coverage](https://codecov.io/gh/spraakbanken/python-json-tools/branch/main/graph/badge.svg)](https://codecov.io/gh/spraakbanken/python-json-tools/)
+
+[![CI(check)](https://github.com/spraakbanken/python-json-tools/actions/workflows/check.yml/badge.svg)](https://github.com/spraakbanken/python-json-tools/actions/workflows/check.yml)
+[![CI(release)](https://github.com/spraakbanken/python-json-tools/actions/workflows/release.yml/badge.svg)](https://github.com/spraakbanken/python-json-tools/actions/workflows/release.yml)
+[![CI(scheduled)](https://github.com/spraakbanken/python-json-tools/actions/workflows/scheduled.yml/badge.svg)](https://github.com/spraakbanken/python-json-tools/actions/workflows/scheduled.yml)
+[![CI(test)](https://github.com/spraakbanken/python-json-tools/actions/workflows/test.yml/badge.svg)](https://github.com/spraakbanken/python-json-tools/actions/workflows/test.yml)
 
 Tools for working with json (especially) json-arrays.
 
-Uses `orjson` or `ujson` if present, otherwise standard `json`.
+Uses `orjson` if present, otherwise standard `json`.
 
 ## Usage
 
 ### Installation
 
-```
+```bash
 pip install sb-json-tools
 ```
 
@@ -37,8 +46,9 @@ Command-line tool to validate a json-file with a schema [json-schema](http://jso
 
 After cloning the repo, just run
 
-```
-$ make test
+```bash
+make dev
+make test
 ```
 
 to setup a virtual environment,
