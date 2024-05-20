@@ -2,7 +2,7 @@
 
 import fastjsonschema  # type: ignore
 
-from typing import Dict, Optional
+from typing import Dict
 from typing import Generator
 from typing import Iterable
 from typing import List
@@ -72,7 +72,7 @@ def processing_validate(
     data: Union[Dict, Iterable[Dict]],
     *,
     on_ok: Generator[None, Dict, None],
-    on_error: Generator[None, Dict, None]
+    on_error: Generator[None, Dict, None],
 ) -> None:
     for ok_, error_ in streaming_validate(schema, data):
         if ok_:
