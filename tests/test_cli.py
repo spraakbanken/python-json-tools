@@ -57,10 +57,10 @@ def test_cli_with_long_option_parameter(runner):
 
 # @pytest.mark.xfail(reason="working on it")
 def test_cli_with_schema_and_valid_arg(runner):
-    schema = "sb_json_tools/tests/data/schema_default.json"
-    arg = "sb_json_tools/tests/data/valid_array.json"
+    schema = "tests/data/schema_default.json"
+    arg = "tests/data/valid_array.json"
     # with open(schema, "rb") as schema, open(arg, "rb") as arg:
-    outfile = "sb_json_tools/tests/data/gen/validated.json"
+    outfile = "tests/data/gen/validated_cli_with_schema_and_valid_arg.json"
     result = runner.invoke(cli.cli, ["validate", "--schema", schema, arg, outfile])
     print("result = {result}".format(result=repr(result)))
     assert result.exit_code == 0
@@ -73,9 +73,9 @@ def test_cli_with_schema_and_valid_arg(runner):
 
 @pytest.mark.xfail(reason="working on it")
 def test_cli_with_schema_and_invalid_type_arg(runner):
-    schema = "sb_json_tools/tests/data/schema_default.json"
-    arg = "sb_json_tools/tests/data/invalid_type.json"
-    outfile = "sb_json_tools/tests/data/gen_validated.json"
+    schema = "tests/data/schema_default.json"
+    arg = "tests/data/invalid_type.json"
+    outfile = "tests/data/gen/validated_cli_with_schema_and_invalid_type_arg.json"
     result = runner.invoke(cli.cli, ["validate", "--schema", schema, arg, outfile])
     print(f"result = {result!r}")
     print(f"result.stdout = {result.stdout}")
@@ -89,9 +89,9 @@ def test_cli_with_schema_and_invalid_type_arg(runner):
 
 @pytest.mark.xfail(reason="working on it")
 def test_cli_with_schema_and_invalid_property_arg(runner):
-    schema = "sb_json_tools/tests/data/schema_default.json"
-    arg = "sb_json_tools/tests/data/invalid_property.json"
-    outfile = "sb_json_tools/tests/data/gen_validated.json"
+    schema = "tests/data/schema_default.json"
+    arg = "tests/data/invalid_property.json"
+    outfile = "tests/data/gen/validated_cli_with_schema_and_invalid_property_arg.json"
     result = runner.invoke(cli.cli, ["validate", "--schema", schema, arg, outfile])
     print(f"result = {result!r}")
     print(f"result.stdout = {result.stdout}")

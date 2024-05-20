@@ -108,4 +108,4 @@ venv.bak/
 /.vscode
 .pdm-python
 
-/sb_json_tools/tests/data/gen
+tests/data/gen/*
