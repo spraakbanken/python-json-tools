@@ -165,5 +165,5 @@ CHANGELOG.md:
 snapshot-update:
 	${INVENV} pytest --snapshot-update
 
-install-dev-release: install-dev
+install-dev-release:
 	pdm install --with release --with dev
