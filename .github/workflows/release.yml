@@ -16,13 +16,13 @@ permissions:
   contents: read
 
 env:
-  MINIMUM_PYTHON_VERSION: "3.8"
+  MINIMUM_PYTHON_VERSION: "3.9"
 
 jobs:
   build:
     # This action builds distribution files for upload to PyPI
 
-    name: ubuntu / 3.8 / build
+    name: ubuntu / 3.9 / build
     runs-on: ubuntu-latest
     steps:
       #----------------------------------------------
@@ -60,7 +60,7 @@ jobs:
     # This action runs the test suite on the built artifact in the `build` action.
     # The default is to run this in ubuntu, macos and windows
 
-    name: ${{ matrix.os }} / 3.8 / test built artifact
+    name: ${{ matrix.os }} / 3.9 / test built artifact
     needs: [build]
 
     strategy:
@@ -87,11 +87,11 @@ jobs:
         with:
           name: pypi_files
           path: dist
-
-      - run: rm -r <INSERT PROJECT SRC>
+      - run: rm sb_json_tools/*.py
+      - run: rm -r sb_json_tools/jt_val
       - run: pip install typing-extensions
-      - run: pip install -r tests/requirements-testing.lock
-      - run: pip install <INSERT PROJECT NAME> --no-index --no-deps --find-links dist --force-reinstall
+      - run: pip install -r sb_json_tools/tests/requirements-testing.lock
+      - run: pip install sb-json-tools --no-index --no-deps --find-links dist --force-reinstall
       - run: pytest
   
   # https://github.com/marketplace/actions/alls-green#why used for branch protection checks
