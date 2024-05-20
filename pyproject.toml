@@ -1,6 +1,6 @@
 [project]
 name = "sb-json-tools"
-version = "0.10.1"
+version = "0.10.2"
 readme = "README.md"
 authors = [
     { name = "Språkbanken at the University of Gothenburg", email = "sb-info@svenska.gu.se" },
