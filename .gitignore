@@ -106,3 +106,4 @@ venv.bak/
 
 # VS Code settings
 /.vscode
+.pdm-python
