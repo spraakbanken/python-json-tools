@@ -1,0 +1,22 @@
+[tool.bumpversion]
+current_version = "0.9.1"
+parse = "(?P<major>\\d+)\\.(?P<minor>\\d+)\\.(?P<patch>\\d+)"
+serialize = ["{major}.{minor}.{patch}"]
+commit = true
+tag = true
+allow_dirty = false
+sign_tags = true
+tag_name = "v{new_version}"
+tag_message = "bump version: {current_version} → {new_version}"
+message = "chore(release): Bump version: {current_version} → {new_version}"
+commit_args = "--no-verify"
+
+[[tool.bumpversion.files]]
+search = '__version__ = "{current_version}"'
+replace = '__version__ = "{new_version}"'
+filename = "sb_json_tools/cli.py"
+
+[[tool.bumpversion.files]]
+filename = "CHANGELOG.md"
+search = '## [unreleased]'
+replace = '## [{new_version}] - {now:%Y-%m-%d}'
