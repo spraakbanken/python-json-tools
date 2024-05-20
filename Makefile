@@ -164,3 +164,6 @@ CHANGELOG.md:
 .PHONY: snapshot-update
 snapshot-update:
 	${INVENV} pytest --snapshot-update
+
+install-dev-release: install-dev
+	pdm install --with release --with dev

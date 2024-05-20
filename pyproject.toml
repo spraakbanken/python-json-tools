@@ -41,6 +41,10 @@ Homepage = "https://github.com/spraakbanken/python-json-tools"
 [project.scripts]
 jt = "sb_json_tools.cli:cli"
 
+[project.optional-dependencies]
+release = [
+    "bump-my-version>=0.21.1",
+]
 [build-system]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
@@ -51,7 +55,6 @@ dev = [
     "pytest>=8.2.1",
     "pytest-cov>=5.0.0",
     "ruff>=0.4.4",
-    "bump-my-version>=0.21.1",
     "mypy>=1.10.0",
     "hypothesis>=6.102.4",
 ]
