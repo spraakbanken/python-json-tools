@@ -18,8 +18,8 @@ JSON_DATA = st.recursive(
     | st.integers()
     | st.text(printable),
     lambda children: st.lists(children, min_size=1).filter(
-        lambda l: len(l) > 1 or l[0] is None
-    )  # noqa: E741
+        lambda l: len(l) > 1 or l[0] is None  # noqa: E741
+    )
     | st.dictionaries(
         st.text(printable).filter(lambda s: len(s) > 0), children, min_size=1
     ),
