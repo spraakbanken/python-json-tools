@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [unreleased]
+
+### Documentation
+
+- Update README
+
+### Miscellaneous Tasks
+
+- Add pre-commit configs
+
 ## [0.10.1] - 2024-05-20
 
 ### Miscellaneous Tasks
