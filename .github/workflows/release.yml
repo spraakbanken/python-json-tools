@@ -87,10 +87,9 @@ jobs:
         with:
           name: pypi_files
           path: dist
-      - run: rm sb_json_tools/*.py
-      - run: rm -r sb_json_tools/jt_val
+      - run: rm -r sb_json_tools
       - run: pip install typing-extensions
-      - run: pip install -r sb_json_tools/tests/requirements-testing.lock
+      - run: pip install -r tests/requirements-testing.lock
       - run: pip install sb-json-tools --no-index --no-deps --find-links dist --force-reinstall
       - run: pytest
   
