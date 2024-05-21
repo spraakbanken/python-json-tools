@@ -42,7 +42,7 @@ how they differ, if they do.
 
 Command-line tool to validate a json-file with a schema [json-schema](http://json-schema.org).
 
-# Development
+## Development
 
 After cloning the repo, just run
 
@@ -57,3 +57,40 @@ and run the unit tests.
 
 _Note:_ If you run the command in a activated virtual environment,
 that environment is used instead.
+
+### Make a release
+
+1. Make changes and commit.
+2. Update CHANGELOG.md:
+   1. If [git-cliff](https://git-cliff.org) is installed, run `make prepare-release` and then manually update the CHANGELOG.md. Commit the changes. (If the commit message start with `chore(release): prepare for`, git-cliff will ignore the commit.)
+   2. Without `git-cliff` add the relevant information with format below, above the latest release.
+
+      ```markdown
+      ## [unreleased]
+
+      ### Added
+      - new features
+
+      ### Fixed
+      - fixed a bug
+      ```
+
+      Commit the changes. (If the commit message start with `chore(release): prepare for`, git-cliff will ignore the commit.)
+3. Bump the version:
+
+   ```bash
+   # Install dependencies for bumping the version
+   make install-dev-release
+   # Bump the version, choose what part by giving part= at command line
+   # Bump the patch part [X.Y.Z -> X.Y.(Z+1)]
+   make bumpversion
+   # bump the minor part [X.Y.Z -> X.(Y+1).0]
+   make bumpversion part=minor
+   # bump the major part [X.Y.Z -> (X+1).0.0]
+   make bumpversion part=major
+   ```
+
+   [`bump-my-version`](https://callowayproject.github.io/bump-my-version/) will commit and tag the bumping.
+4. Push the tag to GitHub for the [release](.github/workflows/release.yml) workflow to build and publish the release to [PyPi](https://pypi.org).
+   1. Either by running `make publish` (or `make publish branch=<BRANCH_NAME>` if not on main)
+   2. Or by running `git push origin main --tags`
