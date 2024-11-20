@@ -59,7 +59,7 @@ build-backend = "hatchling.build"
 exclude = ["/.github", "/docs"]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/sb_json_tools"]
+packages = ["sb_json_tools"]
 
 [tool.hatch.metadata]
 allow-direct-references = true
