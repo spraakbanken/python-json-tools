@@ -1,11 +1,10 @@
 from string import printable
 
 import pytest
-
-from hypothesis import given, strategies as st
+from hypothesis import given
+from hypothesis import strategies as st
 
 from sb_json_tools import jsondiff as diff
-
 
 objs = [
     {"a": 1},  # 0
