@@ -57,8 +57,8 @@ help:
 	@echo ""
 
 PLATFORM := `uname -o`
-REPO := "<REPO-NAME-HERE>"
-PROJECT_SRC := "<SRC-FOLDER-HERE>"
+REPO := python-json-tools
+PROJECT_SRC := src/sb_json_tools
 
 ifeq (${VIRTUAL_ENV},)
   VENV_NAME = .venv
