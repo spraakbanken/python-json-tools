@@ -1,4 +1,3 @@
-
 # Github config and workflows
 
 In this folder there is configuration for codecoverage, dependabot and ci workflows.
