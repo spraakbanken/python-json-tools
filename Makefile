@@ -58,7 +58,7 @@ help:
 
 PLATFORM := `uname -o`
 REPO := python-json-tools
-PROJECT_SRC := src/sb_json_tools
+PROJECT_SRC := sb_json_tools
 
 ifeq (${VIRTUAL_ENV},)
   VENV_NAME = .venv
