@@ -5,7 +5,7 @@ on:
     branches:
       - main
     tags:
-      - 'v[0-9]+.[0-9]+.[0-9]+'
+      - "v[0-9]+.[0-9]+.[0-9]+"
   pull_request:
   merge_group:
 
@@ -17,6 +17,7 @@ permissions:
 
 env:
   MINIMUM_PYTHON_VERSION: "3.9"
+  UV_VERSION: "0.5.1"
 
 jobs:
   build:
@@ -32,16 +33,25 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: true
-      
+
       #----------------------------------------------
       #  -----  setup python   -----
       #----------------------------------------------
       - name: Set up the environment
-        uses: pdm-project/setup-pdm@v4
+        uses: actions/setup-python@v5
         id: setup-python
         with:
           python-version: ${{ env.MINIMUM_PYTHON_VERSION }}
-      
+
+      #----------------------------------------------
+      #  -----  setup uv and load cache   -----
+      #----------------------------------------------
+      - name: Set up uv
+        uses: astral-sh/setup-uv@v3
+        with:
+          version: ${{ env.UV_VERSION }}
+          enable-cache: true
+
       #----------------------------------------------
       #  -----  build distribution -----
       #----------------------------------------------
@@ -66,7 +76,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: 
+        os:
           - ubuntu
           - macos
           - windows
@@ -87,16 +97,17 @@ jobs:
         with:
           name: pypi_files
           path: dist
+
       - run: rm -r sb_json_tools
       - run: pip install typing-extensions
       - run: pip install -r tests/requirements-testing.lock
       - run: pip install sb-json-tools --no-index --no-deps --find-links dist --force-reinstall
       - run: pytest
-  
+
   # https://github.com/marketplace/actions/alls-green#why used for branch protection checks
   release-check:
     if: always()
-    needs: 
+    needs:
       - build
       - test-build
     runs-on: ubuntu-latest
@@ -109,9 +120,9 @@ jobs:
           # allowed-failures: coverage
 
   publish:
-    # This action publishes the built and tested artifact to PyPI, but only on a tag 
+    # This action publishes the built and tested artifact to PyPI, but only on a tag
 
-    needs: 
+    needs:
       - test-build
     if: success() && startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
