@@ -83,7 +83,7 @@ dev: install-dev
 
 # setup development environment
 install-dev:
-	uv sync --all-packages --dev
+	uv sync --all-packages --all-extras --dev
 
 # setup production environment
 install:
