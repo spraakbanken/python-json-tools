@@ -17,7 +17,7 @@ permissions:
 
 env:
   MINIMUM_PYTHON_VERSION: "3.9"
-  UV_VERSION: "0.5.1"
+  UV_VERSION: "0.5.4"
 
 jobs:
   build:
@@ -47,7 +47,7 @@ jobs:
       #  -----  setup uv and load cache   -----
       #----------------------------------------------
       - name: Set up uv
-        uses: astral-sh/setup-uv@v3
+        uses: astral-sh/setup-uv@v4
         with:
           version: ${{ env.UV_VERSION }}
           enable-cache: true
@@ -98,10 +98,10 @@ jobs:
           name: pypi_files
           path: dist
 
-      - run: rm -r sb_json_tools
+      - run: rm -r <INSERT PROJECT SRC>
       - run: pip install typing-extensions
       - run: pip install -r tests/requirements-testing.lock
-      - run: pip install sb-json-tools --no-index --no-deps --find-links dist --force-reinstall
+      - run: pip install <INSERT PROJECT NAME> --no-index --no-deps --find-links dist --force-reinstall
       - run: pytest
 
   # https://github.com/marketplace/actions/alls-green#why used for branch protection checks
