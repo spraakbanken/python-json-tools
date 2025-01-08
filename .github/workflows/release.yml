@@ -98,10 +98,10 @@ jobs:
           name: pypi_files
           path: dist
 
-      - run: rm -r <INSERT PROJECT SRC>
+      - run: rm -r sb_json_tools
       - run: pip install typing-extensions
       - run: pip install -r tests/requirements-testing.lock
-      - run: pip install <INSERT PROJECT NAME> --no-index --no-deps --find-links dist --force-reinstall
+      - run: pip install sb-json-tools --no-index --no-deps --find-links dist --force-reinstall
       - run: pytest
 
   # https://github.com/marketplace/actions/alls-green#why used for branch protection checks
