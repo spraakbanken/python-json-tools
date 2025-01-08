@@ -1,11 +1,16 @@
-import sys
 import json
+import sys
 
-import typer
+try:
+    import typer
+except ImportError:
+    raise RuntimeError(
+        "Please install with the 'cli' extra, 'pip install sb-json-tools[cli]'"
+    )
 
 import json_arrays
-from sb_json_tools import jt_val
 
+from sb_json_tools import jt_val
 
 __version__ = "0.10.2"
 
